@@ -1,0 +1,81 @@
+.open-gallery {
+  opacity: 0;
+  transform: scale(0);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 20;
+  transition: transform 0.5s, opacity 0.75s;
+}
+
+.gallery-visible {
+  transform: scale(1);
+  opacity: 1;
+}
+.photos {
+  height: 75%;
+  background: linear-gradient(
+    rgba(192, 192, 192, 0.404) 60%,
+    rgba(192, 192, 192, 0)
+  );
+  width: 100%;
+}
+
+.photos .main-photo {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+  z-index: 25;
+  transition: opacity 0.35s;
+}
+
+.photos .main-photo img {
+  max-height: 75%;
+  border-radius: 3px;
+  transition: opacity 0.35s;
+}
+
+.photos .main-photo button {
+  background-color: transparent;
+  color: rgb(192, 192, 192);
+  font-size: 4em;
+  opacity: 0.3;
+  transition: opacity 0.4s;
+  z-index: 100;
+}
+
+.photos .main-photo button.backward {
+  transform: translate(130%);
+}
+
+.photos .main-photo button.forward {
+  transform: translate(-130%);
+}
+
+.photos button:hover {
+  opacity: 0.7;
+}
+
+.open-gallery .text {
+  background: linear-gradient(
+    90deg,
+    rgba(19, 19, 19, 0.808),
+    rgba(0, 0, 0, 0.705)
+  );
+  padding: 0 15px 10px 15px;
+  height: calc(25% - 10px);
+  width: calc(100% - 30px);
+  overflow-y: auto;
+}
+
+.open-gallery .text .title {
+  letter-spacing: 2px;
+}
+
+.open-gallery .text .description {
+  letter-spacing: 1px;
+}
