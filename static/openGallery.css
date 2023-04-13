@@ -35,17 +35,21 @@
 
 .photos .main-photo img {
   max-height: 75%;
+  max-width: 95%;
   border-radius: 3px;
   transition: opacity 0.35s;
 }
 
 .photos .main-photo button {
-  background-color: transparent;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.415);
   color: rgb(192, 192, 192);
   font-size: 4em;
-  opacity: 0.3;
+  opacity: 0.6;
   transition: opacity 0.4s;
   z-index: 100;
+  border: 2px var(--gold) solid;
+  border-radius: 25%;
 }
 
 .photos .main-photo button.backward {
@@ -57,7 +61,7 @@
 }
 
 .photos button:hover {
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .open-gallery .text {
@@ -78,4 +82,130 @@
 
 .open-gallery .text .description {
   letter-spacing: 1px;
+}
+
+.close {
+  cursor: pointer;
+  background-color: #3f3f3f84;
+  top: 28px;
+  right: 28px;
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  z-index: 150;
+  transition: rotate 1s, border 0.3s 1s, border-radius 0.3s 1s;
+  border: 2px var(--gold) solid;
+  border-radius: 0px;
+}
+
+.line {
+  display: block;
+  width: 100%;
+  height: 5px;
+  background-color: rgb(169, 165, 151);
+  transform-origin: center;
+
+  border-radius: 2.5px;
+
+  --ytransform: 2.5px;
+}
+
+.line:first-child {
+  rotate: 45deg;
+  translate: 0 calc(20px + var(--ytransform));
+}
+
+.line:last-child {
+  translate: 0 calc(20px - var(--ytransform));
+  rotate: -45deg;
+}
+
+.close:hover {
+  transition: rotate 1s, border 0.3s 1s, border-radius 0.3s 1s;
+  rotate: 90deg;
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+}
+
+.close:hover .line:first-child {
+  animation: first-line 0.8s linear;
+}
+
+@keyframes first-line {
+  17% {
+    translate: 0 calc(20px + var(--ytransform));
+    width: 5px;
+  }
+  34% {
+    width: 5px;
+    translate: 25px 0;
+  }
+  51% {
+    translate: 43px calc(20px + var(--ytransform));
+  }
+  68% {
+    width: 5px;
+    translate: 25px 43px;
+  }
+  85% {
+    translate: 0 calc(20px + var(--ytransform));
+    width: 5px;
+  }
+}
+
+.close:hover .line:last-child {
+  animation: second-line 0.8s linear;
+}
+
+@keyframes second-line {
+  17% {
+    translate: 45px calc(20px - var(--ytransform));
+    width: 5px;
+  }
+  34% {
+    width: 5px;
+    translate: 25px 0;
+  }
+  51% {
+    translate: 0px calc(20px - var(--ytransform));
+  }
+  68% {
+    width: 5px;
+    translate: 25px 43px;
+  }
+  85% {
+    translate: 45px calc(20px - var(--ytransform));
+    width: 5px;
+  }
+}
+
+@media (max-width: 690px) {
+  .open-gallery {
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .gallery-visible {
+    background: black !important;
+  }
+
+  .photos {
+    background: linear-gradient(rgba(4, 4, 4, 0.566) 60%, rgba(7, 7, 7, 0));
+    height: auto;
+    padding-top: 65px;
+    font-size: 3vw;
+    max-height: 100vh;
+  }
+
+  .main-photo img {
+    max-width: 95%;
+  }
+
+  .open-gallery .text {
+    height: auto;
+  }
+
+  .close {
+    top: 5px;
+    right: 10px;
+  }
 }

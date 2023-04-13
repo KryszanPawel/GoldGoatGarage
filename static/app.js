@@ -157,7 +157,7 @@ document.addEventListener("click", async (e) => {
     console.log(e.target);
     const gallery = document.querySelector(".open-gallery");
 
-    gallery.style.background = `url(${e.target.src}) no-repeat`;
+    gallery.style.background = `url(${e.target.src}) no-repeat black`;
     gallery.style.backgroundPosition = `center`;
     gallery.style.backgroundSize = `125%`;
     gallery.classList.add("gallery-visible");
@@ -173,6 +173,16 @@ document.addEventListener("click", async (e) => {
     // sets title of a project
     gallery.querySelector(".text .title").innerText =
       e.target.parentElement.querySelector("h2").innerText;
+
+    // event listener to close button
+    gallery.querySelector(".close").addEventListener(
+      "click",
+      () => {
+        gallery.style.removeProperty(...["background"]);
+        gallery.classList.remove("gallery-visible");
+      },
+      { once: true }
+    );
 
     //event listener to forward button
     gallery.querySelector(".forward").addEventListener("click", () => {
@@ -205,7 +215,7 @@ document.addEventListener("click", async (e) => {
       );
     });
 
-    //event listener to backword button
+    //event listener to backward button
     gallery.querySelector(".backward").addEventListener("click", () => {
       const currentImage = gallery.querySelector(".main-photo img");
       const currentIndex = list_of_photos.indexOf(
