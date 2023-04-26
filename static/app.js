@@ -160,7 +160,6 @@ document.addEventListener("click", async (e) => {
     gallery.style.background = `url(${e.target.src}) no-repeat black`;
     gallery.style.backgroundPosition = `center`;
     gallery.style.backgroundSize = `125%`;
-    gallery.classList.add("gallery-visible");
 
     // find folder name in src of an image
     const folder = e.target.src.split("/").at(-2);
@@ -173,7 +172,14 @@ document.addEventListener("click", async (e) => {
     // sets title of a project
     gallery.querySelector(".text .title").innerText =
       e.target.parentElement.querySelector("h2").innerText;
-
+    // creates gallery image right after loads of chosen project
+    mainImage.addEventListener(
+      "load",
+      () => {
+        gallery.classList.add("gallery-visible");
+      },
+      { once: true }
+    );
     // event listener to close button
     gallery.querySelector(".close").addEventListener(
       "click",
