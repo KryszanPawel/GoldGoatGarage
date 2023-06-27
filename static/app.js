@@ -165,6 +165,7 @@ document.addEventListener("click", async (e) => {
     const folder = e.target.src.split("/").at(-2);
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
+    const infoText = await getInfoText(folder);
 
     // sets first image to display
     const mainImage = gallery.querySelector(".main-photo img");
@@ -172,7 +173,8 @@ document.addEventListener("click", async (e) => {
     // sets title of a project
     gallery.querySelector(".text .title").innerText =
       e.target.parentElement.querySelector("h2").innerText;
-    // creates gallery image right after loads of chosen project
+    gallery.querySelector(".text .description").innerText = infoText;
+    // creates gallery image right after load of chosen project
     mainImage.addEventListener(
       "load",
       () => {
@@ -257,9 +259,15 @@ document.addEventListener("click", async (e) => {
 });
 
 async function getPhotosList(folder) {
-  const response = await fetch(`/static/images/${folder}/list.json`)
+  const response = await fetch(`/static/images/${folder}/info.json`)
     .then((response) => response.json())
-    .then((data) => data);
+    .then((data) => data["picList"]);
+  return response;
+}
 
+async function getInfoText(folder) {
+  const response = await fetch(`/static/images/${folder}/info.json`)
+    .then((response) => response.json())
+    .then((data) => data["info"]);
   return response;
 }
