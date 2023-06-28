@@ -271,3 +271,9 @@ async function getInfoText(folder) {
     .then((data) => data["info"]);
   return response;
 }
+
+document.querySelector("#location").addEventListener("click", (e) => {
+  window.open(
+    "https://www.google.pl/maps/place/Gold+Goat+Garage/@51.3753642,16.9402092,17z/data=!3m1!4b1!4m6!3m5!1s0x470f8dd03f1238d1:0xa53db5587399eaef!8m2!3d51.3753642!4d16.9427841!16s%2Fg%2F11v0_gb97v?entry=ttu"
+  );
+});

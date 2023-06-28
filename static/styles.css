@@ -281,7 +281,7 @@ h2 {
 .seventh p {
   align-self: flex-start;
   margin-top: 55px;
-  height: calc(100% - 60px);
+  height: calc(100% - 65px);
   padding-right: 7px;
   overflow: auto;
   grid-area: 1/2/-1/-1;
@@ -290,8 +290,8 @@ h2 {
 @media (max-width: 690px) {
   .section {
     grid-template-columns: 300px;
-    grid-template-rows: 420px 425px 505px 440px 407px 620px 470px;
-    margin-bottom: 5px;
+    grid-template-rows: 405px 425px 507px 437px 403px 610px 450px;
+    margin-bottom: 40px;
   }
   .segment {
     font-size: 1rem;
@@ -332,7 +332,11 @@ h2 {
   }
   .sixth {
     grid-area: 7/1/8/2;
-    justify-self: center;
+    justify-self: start;
+  }
+  .sixth img {
+    margin-top: 5px;
+    width: 80%;
   }
   .info {
     flex-direction: column;
