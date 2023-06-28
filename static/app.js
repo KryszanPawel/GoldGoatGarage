@@ -147,22 +147,34 @@ const observer = new IntersectionObserver((e) => {
 
 observer.observe(document.querySelector("footer"));
 
-// images opens galery on click
+// card opens galery on click
 
 document.addEventListener("click", async (e) => {
   if (
-    e.target.parentNode.classList.contains("segment") &&
-    e.target.tagName == "IMG"
+    e.target.parentNode.classList.contains("segment") ||
+    e.target.classList.contains("segment")
   ) {
+    if (
+      e.target.parentNode.classList.contains("forth") ||
+      e.target.classList.contains("forth")
+    ) {
+      return;
+    }
+    let img;
+    if (e.target.classList.contains("segment"))
+      img = e.target.querySelector("IMG");
+    if (e.target.parentNode.classList.contains("segment"))
+      img = e.target.parentNode.querySelector("IMG");
+
     console.log(e.target);
     const gallery = document.querySelector(".open-gallery");
 
-    gallery.style.background = `url(${e.target.src}) no-repeat black`;
+    gallery.style.background = `url(${img.src}) no-repeat black`;
     gallery.style.backgroundPosition = `center`;
     gallery.style.backgroundSize = `125%`;
 
     // find folder name in src of an image
-    const folder = e.target.src.split("/").at(-2);
+    const folder = img.src.split("/").at(-2);
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
     const infoText = await getInfoText(folder);
