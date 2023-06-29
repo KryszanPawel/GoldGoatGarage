@@ -321,6 +321,32 @@ h2 {
   .last {
     width: 300px;
   }
+
+  .info {
+    width: 75vw !important;
+  }
+
+  .contact-us {
+    width: calc(75vw + 50px) !important;
+    padding: 20px 0;
+    border: transparent !important;
+    background-color: transparent !important;
+  }
+
+  .contact-us h2 {
+    border: #8e793e solid 2px;
+    border-radius: 5px;
+    background-color: var(--dark);
+    color: rgba(255, 255, 255, 0.921);
+    padding: 10px;
+    width: 95%;
+    text-align: center;
+  }
+
+  .card {
+    width: 120% !important;
+    min-width: 0px !important;
+  }
 }
 
 /* END OF PROJECTS */
@@ -470,33 +496,6 @@ h2 {
   justify-content: space-around;
 }
 
-@media (max-width: 560px) {
-  .info {
-    width: 75vw !important;
-  }
-
-  .contact-us {
-    width: calc(75vw + 50px) !important;
-    padding: 20px 0;
-    border: transparent;
-    background-color: transparent;
-  }
-
-  .contact-us h2 {
-    border: #8e793e solid 2px;
-    border-radius: 5px;
-    background-color: var(--dark);
-    color: rgba(255, 255, 255, 0.921);
-    padding: 10px;
-    width: 95%;
-    text-align: center;
-  }
-
-  .card {
-    width: 120% !important;
-    min-width: 0px !important;
-  }
-}
 /* END OF CONTACT */
 
 /* FOOTER */
