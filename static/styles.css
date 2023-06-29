@@ -236,7 +236,7 @@ h2 {
   }
   .cards {
     display: grid;
-    grid-template-columns: 420px;
+    grid-template-columns: auto;
     justify-content: center;
     height: auto;
   }
@@ -263,7 +263,7 @@ h2 {
 
   .last {
     margin-top: 7px;
-    width: 420px;
+    width: auto;
   }
 
   .last .segment {
@@ -293,7 +293,7 @@ h2 {
 
 @media (max-width: 690px) {
   .cards {
-    grid-template-columns: 300px;
+    grid-template-columns: auto;
   }
   .segment {
     font-size: 1rem;
@@ -317,9 +317,6 @@ h2 {
   }
   .about-us img {
     width: 60%;
-  }
-  .last {
-    width: 300px;
   }
 
   .info {
