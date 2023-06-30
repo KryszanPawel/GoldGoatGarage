@@ -468,6 +468,7 @@ span.border {
   animation-duration: 3s;
   border-color: #8e793e;
   border-top: solid 5px;
+  color: #8e793e;
   display: block;
   position: absolute;
 }
