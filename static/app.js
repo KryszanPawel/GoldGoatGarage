@@ -186,7 +186,7 @@ document.addEventListener("click", async (e) => {
     // sets title of a project
     gallery.querySelector(".text .title").innerText =
       e.target.parentElement.querySelector("h2").innerText;
-    gallery.querySelector(".text .description").innerText = infoText;
+    gallery.querySelector(".text .description").innerHTML = infoText;
     // creates gallery image right after load of chosen project
     mainImage.addEventListener(
       "load",
