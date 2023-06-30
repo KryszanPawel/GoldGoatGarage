@@ -80,7 +80,8 @@ function removeSmallOnClick(e) {
   itemList = document.querySelectorAll(".item");
   if (
     !document.querySelector(".navbar").contains(e.target) ||
-    burger.contains(e.target)
+    burger.contains(e.target) ||
+    e.target.classList.contains("item")
   ) {
     Array.from(itemList)
       .reverse()

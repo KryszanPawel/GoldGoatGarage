@@ -108,7 +108,7 @@ header {
 
 header img {
   max-height: 100%;
-  transform: translateZ(-10px) scale(2);
+  transform: translateZ(-20px) scale(3.7);
   max-width: 100%;
   z-index: -1;
 }
