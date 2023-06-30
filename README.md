@@ -47,7 +47,3 @@
 </ul>
 
 <h5>Website still in development!</h5>
-
-
-  
-

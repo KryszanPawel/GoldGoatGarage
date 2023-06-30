@@ -2,32 +2,28 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   align-items: center;
   background-color: black;
   display: flex;
   height: 100vh;
   justify-content: center;
-  width: 100vw;
   overflow: hidden;
+  width: 100vw;
 }
-
 #bgimg {
-  aspect-ratio: auto;
-  width: 100%;
-  opacity: 0;
-  animation-name: goat;
   animation-duration: 3.5s;
+  animation-name: goat;
+  aspect-ratio: auto;
+  opacity: 0;
+  width: 100%;
 }
-
 @media (min-width: 1100px) {
   #bgimg {
     height: auto;
     width: 1048px;
   }
 }
-
 @keyframes goat {
   0%,
   2%,
@@ -47,13 +43,11 @@ body {
   21% {
     opacity: 0.8;
   }
-
   50% {
     filter: blur(0px);
     opacity: 1;
     scale: 1;
   }
-
   75% {
     filter: blur(50px);
     opacity: 1;
