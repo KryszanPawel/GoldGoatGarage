@@ -161,6 +161,12 @@ document.addEventListener("click", async (e) => {
     ) {
       return;
     }
+    // add #gallery to url (needed to control browser back button)
+    if (window.location.href.endsWith("#")) {
+      window.location.assign(window.location.href + "gallery");
+    } else {
+      window.location.assign(window.location.href + "#gallery");
+    }
     let img;
     if (e.target.classList.contains("segment"))
       img = e.target.querySelector("IMG");
@@ -176,6 +182,7 @@ document.addEventListener("click", async (e) => {
 
     // find folder name in src of an image
     const folder = img.src.split("/").at(-2);
+
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
     const infoText = await getInfoText(folder);
@@ -196,13 +203,42 @@ document.addEventListener("click", async (e) => {
       { once: true }
     );
     // event listener to close button
+    function closeGallery() {
+      gallery.style.removeProperty(...["background"]);
+      gallery.classList.remove("gallery-visible");
+      let url = window.location.href;
+      url = url.slice(0, url.indexOf("#")) + "#";
+      window.location.assign(url);
+    }
+
     gallery.querySelector(".close").addEventListener(
       "click",
       () => {
-        gallery.style.removeProperty(...["background"]);
-        gallery.classList.remove("gallery-visible");
+        closeGallery();
       },
       { once: true }
+    );
+
+    // close gallery on back browser button
+    window.onhashchange = function () {
+      if (window.location.href.indexOf("#gallery") < 0) {
+        closeGallery();
+      }
+    };
+
+    // close gallery by esc button and control galery by arrows
+    document.addEventListener(
+      "keydown",
+      (esc = (e) => {
+        if (e.key === "Escape") {
+          closeGallery();
+        }
+        if (e.key === "ArrowRight") gallery.querySelector(".forward").click();
+        if (e.key === "ArrowLeft") gallery.querySelector(".backward").click();
+        if (!gallery.classList.contains("gallery-visible")) {
+          document.removeEventListener("keydown", esc);
+        }
+      })
     );
 
     //event listener to forward button
