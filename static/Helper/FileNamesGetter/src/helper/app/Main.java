@@ -106,7 +106,7 @@ public class Main {
                 Arrays.asList(Objects.requireNonNull(
                         new File(pathToFolder).listFiles())));
         filterFolders(folder);
-        for(File dir : folder.subList(1,2)){
+        for(File dir : folder.subList(0,1)){
             String pathToJson = getPathToJson(dir);
             if(pathToJson == null){
                 System.out.println("No JSON file compression interrupted in " + dir);

@@ -1,5 +1,6 @@
 package helper.app;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
@@ -16,43 +17,33 @@ import java.util.Map;
 public class PhotoResizer {
     public static void photoResize(String path) throws IOException {
         File inputFile = new File(path);
-
-
-        BufferedImage originalImage = ImageIO.read(inputFile);
         String extension = inputFile.getName().substring(
                 inputFile.getName().lastIndexOf(".") + 1);
+        File outputFile = new File("./compressedFIle.png");
+        long targetSizeBytes = 1024 * 1024;
+        System.out.println(inputFile);
+        BufferedImage image = ImageIO.read(inputFile);
 
-        long startingSize = (inputFile.length() / 1024);
+        float compressionQuality = 1.0f;
 
-        File outputFile = new File(path);
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+        while(outputFile.length() > targetSizeBytes && compressionQuality > 0.1f){
+            iterateCompressImage(image, outputFile, compressionQuality);
+            compressionQuality -= 0.1f;
+        }
+    }
+
+    private static void iterateCompressImage(BufferedImage image, File outputFile, float compressionQuality) throws IOException {
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
         ImageWriter writer = writers.next();
-
         ImageWriteParam param = writer.getDefaultWriteParam();
         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        ImageOutputStream output = ImageIO.createImageOutputStream(outputFile);
+        param.setCompressionQuality(compressionQuality);
 
-        float compressionQuality = 0.95f;
-        while(inputFile.length() / 1024 > 1000){
-            outputFile = new File(path);
+        ImageOutputStream outputStream = ImageIO.createImageOutputStream(outputFile);
+        writer.setOutput(outputStream);
+        writer.write(null, new IIOImage(image,null,null),param);
 
-            param.setCompressionQuality(compressionQuality);
-
-            output = ImageIO.createImageOutputStream(outputFile);
-            writer.setOutput(output);
-            writer.write(null, new javax.imageio.IIOImage(originalImage, null,null), param);
-            inputFile = outputFile;
-            System.out.println(path);
-        }
-
-
-        output.close();
+        outputStream.close();
         writer.dispose();
-
-        outputFile = new File("./output_compressed." + extension);
-
-        System.out.println(inputFile + "    " + startingSize / 1024 + " KB to " + outputFile.length() / 1024 + " KB");
-
-
     }
 }
