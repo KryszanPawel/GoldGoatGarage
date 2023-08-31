@@ -116,7 +116,9 @@ public class Main {
             JsonArray listArr = (JsonArray) data.get("picList");
             listArr.forEach(s -> {
                 try {
-                    compressPhoto(pathToJson + "/" + s.toString().replaceAll("\"", ""));
+                    compressPhoto(pathToJson.replaceAll("info\\.json","")
+                            + "/"
+                            + s.toString().replaceAll("\"", ""));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
