@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,32 +17,41 @@ public class PhotoResizer {
     public static void photoResize(String path) throws IOException {
         File inputFile = new File(path);
 
+
         BufferedImage originalImage = ImageIO.read(inputFile);
         String extension = inputFile.getName().substring(
                 inputFile.getName().lastIndexOf(".") + 1);
 
-        File outputFile = new File("./output_compressed." + extension);
+        long startingSize = (inputFile.length() / 1024);
 
-        float compressionQuality = 0.1f;
-
-
-        System.out.println(extension);
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(extension);
+        File outputFile = new File(path);
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
         ImageWriter writer = writers.next();
 
         ImageWriteParam param = writer.getDefaultWriteParam();
         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(compressionQuality);
+        ImageOutputStream output = ImageIO.createImageOutputStream(outputFile);
 
-        FileImageOutputStream output = new FileImageOutputStream(outputFile);
-        writer.setOutput(output);
-        writer.write(null, new javax.imageio.IIOImage(originalImage, null,null), param);
+        float compressionQuality = 0.95f;
+        while(inputFile.length() / 1024 > 1000){
+            outputFile = new File(path);
+
+            param.setCompressionQuality(compressionQuality);
+
+            output = ImageIO.createImageOutputStream(outputFile);
+            writer.setOutput(output);
+            writer.write(null, new javax.imageio.IIOImage(originalImage, null,null), param);
+            inputFile = outputFile;
+            System.out.println(path);
+        }
+
+
         output.close();
         writer.dispose();
 
         outputFile = new File("./output_compressed." + extension);
 
-        System.out.println(inputFile + "    " + inputFile.length() / 1024 + " KB to " + outputFile.length() / 1024);
+        System.out.println(inputFile + "    " + startingSize / 1024 + " KB to " + outputFile.length() / 1024 + " KB");
 
 
     }

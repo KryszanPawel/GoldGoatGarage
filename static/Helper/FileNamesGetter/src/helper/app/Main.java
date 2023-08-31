@@ -117,7 +117,6 @@ public class Main {
             listArr.forEach(s -> {
                 try {
                     compressPhoto(pathToJson.replaceAll("info\\.json","")
-                            + "/"
                             + s.toString().replaceAll("\"", ""));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
