@@ -1,5 +1,7 @@
 package helper.app;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -19,31 +21,29 @@ public class PhotoResizer {
         File inputFile = new File(path);
         String extension = inputFile.getName().substring(
                 inputFile.getName().lastIndexOf(".") + 1);
-        File outputFile = new File("./compressedFIle.png");
+        long actualSize = inputFile.length();
+        long startSize = actualSize;
         long targetSizeBytes = 1024 * 1024;
-        System.out.println(inputFile);
-        BufferedImage image = ImageIO.read(inputFile);
+        System.out.println(inputFile.length() / 1024);
 
         float compressionQuality = 1.0f;
 
-        while(outputFile.length() > targetSizeBytes && compressionQuality > 0.1f){
-            iterateCompressImage(image, outputFile, compressionQuality);
+        while(actualSize > targetSizeBytes && compressionQuality > 0.5f){
+            actualSize = iterateCompressImage(inputFile, inputFile, compressionQuality, actualSize);
             compressionQuality -= 0.1f;
+
         }
+        System.out.println(path + " compressed from " + startSize / 1024 +
+                " Kb" + " to " + actualSize / 1024 + " Kb");
     }
 
-    private static void iterateCompressImage(BufferedImage image, File outputFile, float compressionQuality) throws IOException {
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
-        ImageWriter writer = writers.next();
-        ImageWriteParam param = writer.getDefaultWriteParam();
-        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(compressionQuality);
-
-        ImageOutputStream outputStream = ImageIO.createImageOutputStream(outputFile);
-        writer.setOutput(outputStream);
-        writer.write(null, new IIOImage(image,null,null),param);
-
-        outputStream.close();
-        writer.dispose();
+    private static long iterateCompressImage(File input, File output, float compressionQuality, long size) throws IOException {
+        double scaleFactor = 1d;
+        if(size / 1024 > 2000) scaleFactor = 0.7d;
+        Thumbnails.of(input)
+                .scale(scaleFactor)
+                .outputQuality(compressionQuality)
+                .toFile(output);
+        return output.length();
     }
 }

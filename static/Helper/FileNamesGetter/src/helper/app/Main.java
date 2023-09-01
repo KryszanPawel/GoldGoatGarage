@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 public class Main {
     public static void main(String[] args) throws IOException {
         String pathToPhotos = "../../images";
-//        writeSortedFileNamesToJSON(pathToPhotos);
-        startCompression(pathToPhotos);
+        writeSortedFileNamesToJSON(pathToPhotos);
+        reduceSizeOfPhotos(pathToPhotos);
     }
 
     public static void writeSortedFileNamesToJSON(String pathToFolder) throws IOException {
@@ -106,11 +106,11 @@ public class Main {
                 Arrays.asList(Objects.requireNonNull(
                         new File(pathToFolder).listFiles())));
         filterFolders(folder);
-        for(File dir : folder.subList(0,1)){
+        for(File dir : folder){
             String pathToJson = getPathToJson(dir);
             if(pathToJson == null){
                 System.out.println("No JSON file compression interrupted in " + dir);
-                return;
+                continue;
             }
             JsonObject data = JsonManipulator.getJsonData(pathToJson);
             JsonArray listArr = (JsonArray) data.get("picList");
