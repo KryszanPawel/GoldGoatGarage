@@ -182,6 +182,7 @@ document.addEventListener("click", async (e) => {
 
     // find folder name in src of an image
     const folder = img.src.split("/").at(-2);
+    console.log(folder);
 
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
