@@ -210,7 +210,8 @@ document.addEventListener("click", async (e) => {
       let url = window.location.href;
       url = url.slice(0, url.indexOf("#") + 1);
       console.log(url);
-      window.location.assign(url);
+      console.log(history);
+      // window.location.assign(url);
     }
 
     gallery.querySelector(".close").addEventListener(
