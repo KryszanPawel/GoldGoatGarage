@@ -208,10 +208,9 @@ document.addEventListener("click", async (e) => {
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
-      url = url.slice(0, url.indexOf("#") + 1);
+      url = url.slice(0, url.indexOf("#"));
       console.log(url);
-      console.log(history);
-      // window.location.assign(url);
+      window.location.assign(url);
     }
 
     gallery.querySelector(".close").addEventListener(

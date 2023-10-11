@@ -34,11 +34,15 @@
   z-index: 25;
 }
 .photos .main-photo img {
-  border-radius: 3px;
+  border-radius: 10px;
   min-height: 85%;
   max-height: 95%;
   max-width: 95%;
   transition: opacity 0.35s;
+  border: solid rgba(39, 36, 29, 0.282) 5px;
+  -webkit-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
+  -moz-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
+  box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
 }
 .photos .main-photo button {
   background-color: rgba(0, 0, 0, 0.415);
