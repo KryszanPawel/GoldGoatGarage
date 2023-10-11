@@ -255,6 +255,7 @@ h2 {
     height: 470px !important;
   }
 }
+
 @media (max-width: 690px) {
   .cards {
     grid-template-columns: auto;
@@ -268,22 +269,24 @@ h2 {
   .info {
     flex-direction: column;
     left: 0 !important;
-    width: 85% !important;
+    width: 85%;
   }
   .about-us {
+    width: 270px !important;
     display: block;
-    height: 700px;
-    max-height: 700px !important;
+    height: 600px !important;
+  }
+  .about-us .section-wrapper {
+    margin-right: 0;
   }
   .about-us p {
     height: auto;
   }
   .about-us img {
     width: 60%;
+    margin-right: 10px;
   }
-  .info {
-    width: 75vw !important;
-  }
+
   .contact-us {
     background-color: transparent !important;
     border: transparent !important;
@@ -306,6 +309,7 @@ h2 {
 }
 /* END OF PROJECTS */
 /* ABOUT SECTION */
+
 .contact-us,
 .info {
   width: 840px;
@@ -325,9 +329,10 @@ h2 {
   position: relative;
 }
 .about-us {
-  height: 400px;
+  height: 570px;
   margin-top: 15px;
 }
+
 .info img {
   border-radius: 15px;
   float: right;
@@ -336,9 +341,13 @@ h2 {
 }
 .section-wrapper {
   margin: 25px 25px 25px 10px;
-  max-height: inherit;
+  height: inherit;
   overflow-y: auto;
   padding-right: 4px;
+}
+
+.section-wrapper p {
+  font-size: 1.1rem;
 }
 /* END OF ABOUT */
 /* CONTACT */
