@@ -208,7 +208,8 @@ document.addEventListener("click", async (e) => {
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
-      url = url.slice(0, url.indexOf("#")) + "#";
+      url = url.slice(0, url.indexOf("#") + 1);
+      console.log(url);
       window.location.assign(url);
     }
 
@@ -227,7 +228,7 @@ document.addEventListener("click", async (e) => {
       }
     };
 
-    // close gallery by esc button and control galery by arrows
+    // close gallery by esc button and control gallery by arrows
     document.addEventListener(
       "keydown",
       (esc = (e) => {
