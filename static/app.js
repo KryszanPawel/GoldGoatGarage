@@ -162,10 +162,12 @@ document.addEventListener("click", async (e) => {
       return;
     }
     // add #gallery to url (needed to control browser back button)
-    if (window.location.href.endsWith("#")) {
-      window.location.assign(window.location.href + "gallery");
+    if (window.location.hash.endsWith("#")) {
+      window.location.hash = "gallery";
+      // window.history.replaceState({}, null, window.location.href + "gallery");
     } else {
-      window.location.assign(window.location.href + "#gallery");
+      window.location.hash = "#gallery";
+      // window.history.replaceState({}, null, window.location.href + "#gallery");
     }
     let img;
     if (e.target.classList.contains("segment"))
@@ -203,15 +205,25 @@ document.addEventListener("click", async (e) => {
       },
       { once: true }
     );
+
     // event listener to close button
     function closeGallery() {
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
-      url = url.slice(0, url.indexOf("#"));
-      console.log(url);
-      window.location.assign(url);
+      // url = url.indexOf("#") >= 0 ? url.slice(0, url.indexOf("#")) : url;
+      window.location.hash = "";
+      // window.history.replaceState({}, null, url);
     }
+
+    // function closeGalleryByBack() {
+    //   gallery.style.removeProperty(...["background"]);
+    //   gallery.classList.remove("gallery-visible");
+    //   let url = window.location.href;
+    //   url = url.indexOf("#") >= 0 ? url.slice(0, url.indexOf("#")) : url;
+    //   console.log(url);
+    //   window.location.assign(url);
+    // }
 
     gallery.querySelector(".close").addEventListener(
       "click",
@@ -220,8 +232,8 @@ document.addEventListener("click", async (e) => {
       },
       { once: true }
     );
-
     // close gallery on back browser button
+
     window.onhashchange = function () {
       if (window.location.href.indexOf("#gallery") < 0) {
         closeGallery();

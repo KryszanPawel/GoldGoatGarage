@@ -329,7 +329,6 @@ h2 {
   position: relative;
 }
 .about-us {
-  height: 570px;
   margin-top: 15px;
 }
 
@@ -753,6 +752,12 @@ span.border {
   }
 }
 @media (max-width: 690px) {
+  .moving .img-wrapper::after {
+    right: 37%;
+  }
+  .moving .img-wrapper::before {
+    left: 51%;
+  }
   .moving {
     background-color: #111103c0;
   }
