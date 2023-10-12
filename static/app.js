@@ -163,10 +163,10 @@ document.addEventListener("click", async (e) => {
     }
     // add #gallery to url (needed to control browser back button)
     if (window.location.hash.endsWith("#")) {
-      window.location.hash = "gallery";
+      window.location.assign(window.location.href + "gallery");
       // window.history.replaceState({}, null, window.location.href + "gallery");
     } else {
-      window.location.hash = "#gallery";
+      window.location.assign(window.location.href + "#gallery");
       // window.history.replaceState({}, null, window.location.href + "#gallery");
     }
     let img;
@@ -206,32 +206,20 @@ document.addEventListener("click", async (e) => {
       { once: true }
     );
 
-    // event listener to close button
+    function back() {
+      gallery.removeEventListener("click", crossClose);
+      document.removeEventListener("keydown", esc);
+      history.back();
+      console.log("here");
+    }
+
     function closeGallery() {
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
-      // url = url.indexOf("#") >= 0 ? url.slice(0, url.indexOf("#")) : url;
       window.location.hash = "";
-      // window.history.replaceState({}, null, url);
     }
 
-    // function closeGalleryByBack() {
-    //   gallery.style.removeProperty(...["background"]);
-    //   gallery.classList.remove("gallery-visible");
-    //   let url = window.location.href;
-    //   url = url.indexOf("#") >= 0 ? url.slice(0, url.indexOf("#")) : url;
-    //   console.log(url);
-    //   window.location.assign(url);
-    // }
-
-    gallery.querySelector(".close").addEventListener(
-      "click",
-      () => {
-        closeGallery();
-      },
-      { once: true }
-    );
     // close gallery on back browser button
 
     window.onhashchange = function () {
@@ -240,20 +228,38 @@ document.addEventListener("click", async (e) => {
       }
     };
 
+    // event listener to close button
+
+    crossClose = () => {
+      back();
+      gallery.querySelector(".close").removeEventListener("click", crossClose);
+    };
+
+    gallery
+      .querySelector(".close")
+      .addEventListener("click", crossClose, { once: true });
+
     // close gallery by esc button and control gallery by arrows
-    document.addEventListener(
-      "keydown",
-      (esc = (e) => {
-        if (e.key === "Escape") {
-          closeGallery();
+    arrowsReation = (e) => {
+      if (e.key === "ArrowRight") gallery.querySelector(".forward").click();
+      if (e.key === "ArrowLeft") gallery.querySelector(".backward").click();
+      if (!gallery.classList.contains("gallery-visible")) {
+        document.removeEventListener("keydown", arrowsReation);
+      }
+    };
+    gallery.addEventListener("keydown", arrowsReation);
+
+    esc = (e) => {
+      if (e.key === "Escape") {
+        if (document.location.hash.indexOf("#gallery") >= 0) {
+          back();
         }
-        if (e.key === "ArrowRight") gallery.querySelector(".forward").click();
-        if (e.key === "ArrowLeft") gallery.querySelector(".backward").click();
         if (!gallery.classList.contains("gallery-visible")) {
           document.removeEventListener("keydown", esc);
         }
-      })
-    );
+      }
+    };
+    document.addEventListener("keydown", esc, { once: true });
 
     //event listener to forward button
     gallery.querySelector(".forward").addEventListener("click", () => {
