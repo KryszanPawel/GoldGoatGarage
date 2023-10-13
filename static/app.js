@@ -206,14 +206,16 @@ document.addEventListener("click", async (e) => {
       { once: true }
     );
 
+    gallery.scrollTop = 0;
+
     function back() {
-      gallery.removeEventListener("click", crossClose);
-      document.removeEventListener("keydown", esc);
       history.back();
       console.log("here");
     }
 
     function closeGallery() {
+      gallery.querySelector(".close").removeEventListener("click", crossClose);
+      document.removeEventListener("keydown", esc);
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
