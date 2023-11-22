@@ -23,7 +23,7 @@ public class PhotoResizer {
                 inputFile.getName().lastIndexOf(".") + 1);
         long actualSize = inputFile.length();
         long startSize = actualSize;
-        long targetSizeBytes = 1024 * 1024;
+        long targetSizeBytes = 500 * 1024;
         System.out.println(inputFile.length() / 1024);
 
         float compressionQuality = 1.0f;
@@ -39,7 +39,7 @@ public class PhotoResizer {
 
     private static long iterateCompressImage(File input, File output, float compressionQuality, long size) throws IOException {
         double scaleFactor = 1d;
-        if(size / 1024 > 2000) scaleFactor = 0.7d;
+        if(size / 1024 > 200) scaleFactor = 0.7d;
         Thumbnails.of(input)
                 .scale(scaleFactor)
                 .outputQuality(compressionQuality)
