@@ -28,7 +28,7 @@ public class PhotoResizer {
 
         float compressionQuality = 1.0f;
 
-        while(actualSize > targetSizeBytes && compressionQuality > 0.5f){
+        while(actualSize > targetSizeBytes && compressionQuality > 0.9f){
             actualSize = iterateCompressImage(inputFile, inputFile, 0.9f, actualSize);
             compressionQuality -= 0.1f;
 
