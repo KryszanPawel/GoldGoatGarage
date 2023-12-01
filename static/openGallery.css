@@ -1,3 +1,9 @@
+@media (max-aspect-ratio: 1.2) {
+  .gallery-visible {
+    background: black !important;
+  }
+}
+
 .open-gallery {
   height: 100vh;
   left: 0;
@@ -35,7 +41,7 @@
 }
 .photos .main-photo img {
   border-radius: 10px;
-  min-height: 85%;
+  min-height: auto;
   max-height: 95%;
   max-width: 95%;
   transition: opacity 0.35s;
@@ -188,10 +194,10 @@
   .photos {
     background: linear-gradient(rgba(4, 4, 4, 0.566) 60%, rgba(7, 7, 7, 0));
     font-size: 3vw;
-    height: auto;
-    max-height: 100vh;
     padding-top: 65px;
+    height: 450px;
   }
+
   .main-photo img {
     max-width: 95%;
   }
