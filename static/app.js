@@ -220,6 +220,7 @@ document.addEventListener("click", async (e) => {
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
       window.location.hash = "";
+      console.log("closing gallery");
     }
 
     // close gallery on back browser button
@@ -235,6 +236,10 @@ document.addEventListener("click", async (e) => {
     crossClose = () => {
       back();
       gallery.querySelector(".close").removeEventListener("click", crossClose);
+      let url = window.location.href;
+      if (url.indexOf("#") > 0) {
+        back();
+      }
     };
 
     gallery
