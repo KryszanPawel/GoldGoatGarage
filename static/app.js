@@ -161,14 +161,13 @@ document.addEventListener("click", async (e) => {
     ) {
       return;
     }
+    let url = window.location.href;
+    url =
+      url.indexOf("#gallery") > 0
+        ? url.substring(0, url.indexOf("#gallery"))
+        : url;
     // add #gallery to url (needed to control browser back button)
-    if (window.location.hash.endsWith("#")) {
-      window.location.assign(window.location.href + "gallery");
-      // window.history.replaceState({}, null, window.location.href + "gallery");
-    } else {
-      window.location.assign(window.location.href + "#gallery");
-      // window.history.replaceState({}, null, window.location.href + "#gallery");
-    }
+    window.location.assign(url + "#gallery");
     let img;
     if (e.target.classList.contains("segment"))
       img = e.target.querySelector("IMG");
@@ -220,7 +219,6 @@ document.addEventListener("click", async (e) => {
       gallery.classList.remove("gallery-visible");
       let url = window.location.href;
       window.location.hash = "";
-      console.log("closing gallery");
     }
 
     // close gallery on back browser button
@@ -237,9 +235,6 @@ document.addEventListener("click", async (e) => {
       back();
       gallery.querySelector(".close").removeEventListener("click", crossClose);
       let url = window.location.href;
-      if (url.indexOf("#") > 0) {
-        back();
-      }
     };
 
     gallery
