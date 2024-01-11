@@ -161,8 +161,8 @@ document.addEventListener("click", async (e) => {
     document.removeEventListener("keydown", esc);
     gallery.querySelector(".close").removeEventListener("click", crossClose);
     if (
-      e.target.parentNode.classList.contains("forth") ||
-      e.target.classList.contains("forth")
+      e.target.parentNode.classList.contains("movie") ||
+      e.target.classList.contains("movie")
     ) {
       return;
     }
