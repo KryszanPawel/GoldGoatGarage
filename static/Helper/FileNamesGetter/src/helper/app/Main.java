@@ -1,22 +1,24 @@
 package helper.app;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+//import com.google.gson.JsonArray;
+//import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String pathToPhotos = "../../images";
-//        writeSortedFileNamesToJSON(pathToPhotos);
-        reduceSizeOfPhotos(pathToPhotos);
+        String pathToPhotos = "./../images";
+        writeSortedFileNamesToJSON(pathToPhotos);
+//        reduceSizeOfPhotos(pathToPhotos);
     }
 
     public static void writeSortedFileNamesToJSON(String pathToFolder) throws IOException {
 //        Create list of folders with photos in images directory
+        System.out.println(Path.of(pathToFolder).toAbsolutePath());
         List<File> folder = new ArrayList<>(
                 Arrays.asList(Objects.requireNonNull(
                         new File(pathToFolder).listFiles())));
@@ -68,24 +70,24 @@ public class Main {
         return names;
     }
 
-    public static void reduceSizeOfPhotos(String pathToFolder) throws IOException {
-        Scanner scan = new Scanner(System.in);
-
-        System.out.println("""
-                This part of program will reduce size of photos exciting 1MB.
-                This will cause quality lose on photos.
-                Are you sure, you want to do this? (Y/N)""");
-        char answer = scan.nextLine().toUpperCase().charAt(0);
-
-        switch (answer) {
-            case 'Y' -> startCompression(pathToFolder);
-            case 'N' -> System.out.println("Closing without compression.");
-            default -> {
-                System.out.println("Try again");
-                reduceSizeOfPhotos(pathToFolder);
-            }
-        }
-    }
+//    public static void reduceSizeOfPhotos(String pathToFolder) throws IOException {
+//        Scanner scan = new Scanner(System.in);
+//
+//        System.out.println("""
+//                This part of program will reduce size of photos exciting 1MB.
+//                This will cause quality lose on photos.
+//                Are you sure, you want to do this? (Y/N)""");
+//        char answer = scan.nextLine().toUpperCase().charAt(0);
+//
+//        switch (answer) {
+//            case 'Y' -> startCompression(pathToFolder);
+//            case 'N' -> System.out.println("Closing without compression.");
+//            default -> {
+//                System.out.println("Try again");
+//                reduceSizeOfPhotos(pathToFolder);
+//            }
+//        }
+//    }
 
     private static String getPathToJson(File dir){
         List<File> jsonFiles = new ArrayList<>(
@@ -97,34 +99,34 @@ public class Main {
         return jsonFiles.get(0).toString();
     }
 
-    private static void compressPhoto(String pathToPhoto) throws IOException {
-        PhotoResizer.photoResize(pathToPhoto);
-    }
+//    private static void compressPhoto(String pathToPhoto) throws IOException {
+//        PhotoResizer.photoResize(pathToPhoto);
+//    }
 
-    private static void startCompression(String pathToFolder) throws IOException {
-        List<File> folder = new ArrayList<>(
-                Arrays.asList(Objects.requireNonNull(
-                        new File(pathToFolder).listFiles())));
-        filterFolders(folder);
-        for(File dir : folder){
-            String pathToJson = getPathToJson(dir);
-            if(pathToJson == null){
-                System.out.println("No JSON file compression interrupted in " + dir);
-                continue;
-            }
-            JsonObject data = JsonManipulator.getJsonData(pathToJson);
-            JsonArray listArr = (JsonArray) data.get("picList");
-            listArr.forEach(s -> {
-                try {
-                    compressPhoto(pathToJson.replaceAll("info\\.json","")
-                            + s.toString().replaceAll("\"", ""));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-        }
-
-        System.out.println("Compression complete!");
-    }
+//    private static void startCompression(String pathToFolder) throws IOException {
+//        List<File> folder = new ArrayList<>(
+//                Arrays.asList(Objects.requireNonNull(
+//                        new File(pathToFolder).listFiles())));
+//        filterFolders(folder);
+//        for(File dir : folder){
+//            String pathToJson = getPathToJson(dir);
+//            if(pathToJson == null){
+//                System.out.println("No JSON file compression interrupted in " + dir);
+//                continue;
+//            }
+//            JsonObject data = JsonManipulator.getJsonData(pathToJson);
+//            JsonArray listArr = (JsonArray) data.get("picList");
+//            listArr.forEach(s -> {
+//                try {
+//                    compressPhoto(pathToJson.replaceAll("info\\.json","")
+//                            + s.toString().replaceAll("\"", ""));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            });
+//
+//        }
+//
+//        System.out.println("Compression complete!");
+//    }
 }
