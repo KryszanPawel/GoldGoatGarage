@@ -101,14 +101,9 @@
   width: 20%;
   min-width: 200px;
   float: left;
-
   -webkit-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
   -moz-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
   box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
-}
-
-.floatLeft {
-  float: left;
 }
 
 .floatRight {
@@ -123,6 +118,10 @@
   .open-gallery .text .description {
     font-size: 1rem;
     letter-spacing: 1px;
+  }
+
+  .floatImage {
+    min-width: 40%;
   }
 }
 .close {
