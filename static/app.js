@@ -191,7 +191,8 @@ document.addEventListener("click", async (e) => {
 
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
-    const infoText = await getInfoText(folder);
+    //long description
+    injectLogoIfLongText(await getInfoText(folder));
 
     // sets first image to display
     const mainImage = gallery.querySelector(".main-photo img");
@@ -199,7 +200,7 @@ document.addEventListener("click", async (e) => {
     // sets title of a project
     gallery.querySelector(".text .title").innerText =
       e.target.parentElement.querySelector("h2").innerText;
-    gallery.querySelector(".text .description").innerHTML = infoText;
+
     // creates gallery image right after load of chosen project
     mainImage.addEventListener(
       "load",
@@ -217,7 +218,7 @@ document.addEventListener("click", async (e) => {
       gallery.style.removeProperty(...["background"]);
       gallery.classList.remove("gallery-visible");
       let preCloseHash = window.location.hash;
-      console.log(preCloseHash);
+      // console.log(preCloseHash);
       window.location.hash =
         preCloseHash.indexOf("#gallery") > -1
           ? preCloseHash.substring(0, preCloseHash.indexOf("#gallery"))
@@ -325,7 +326,7 @@ async function getInfoText(folder) {
   const response = await fetch(`/static/images/${folder}/info.json`)
     .then((response) => response.json())
     .then((data) => data["info"]);
-  return response;
+  return response[0];
 }
 
 document.querySelector("#location").addEventListener("click", (e) => {
@@ -356,3 +357,37 @@ crossClose = () => {
 function back() {
   history.back();
 }
+
+getAspectRatio = (img) => {
+  return img.naturalWidth / img.naturalHeight;
+};
+
+injectLogoIfLongText = (infoText) => {
+  let adder = 400;
+  let node = gallery.querySelector(".text .description");
+  node.innerHTML = infoText;
+  let nodeHeight = node.clientHeight;
+  let pointerPixels = 60;
+  if (nodeHeight > 250) {
+    let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
+    do {
+      let pointer = Math.floor((pointerPixels / nodeHeight) * infoText.length);
+      infoText =
+        infoText.substring(0, pointer) +
+        imageHTML +
+        infoText.substring(pointer, infoText.length);
+      node.innerHTML = infoText;
+      nodeHeight = node.clientHeight;
+      pointerPixels += adder;
+
+      // console.log(pointerPixels + "   " + nodeHeight);
+    } while (pointerPixels < nodeHeight - 100);
+
+    Array.from(node.querySelectorAll("IMG"))
+      .filter((image, index) => (index + 1) % 2 == 0)
+      .forEach((image) => {
+        image.classList.add("floatRight");
+        // console.log(image);
+      });
+  }
+};

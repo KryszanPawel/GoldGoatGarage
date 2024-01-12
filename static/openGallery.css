@@ -41,7 +41,6 @@
 }
 .photos .main-photo img {
   border-radius: 10px;
-  min-height: auto;
   max-height: 95%;
   max-width: 95%;
   transition: opacity 0.35s;
@@ -85,8 +84,35 @@
   letter-spacing: 2px;
 }
 .open-gallery .text .description {
+  padding-left: 3%;
+  padding-right: 3%;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 400;
   font-size: 1.4rem;
   letter-spacing: 1px;
+}
+
+.floatImage {
+  margin-top: 20px;
+  margin-bottom: 1px;
+  margin-right: 20px;
+  border: #8e793e solid 5px;
+  border-radius: 10px;
+  width: 20%;
+  min-width: 200px;
+  float: left;
+
+  -webkit-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
+  -moz-box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
+  box-shadow: 0px 0px 37px 6px rgb(174, 173, 170);
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
 }
 
 @media (max-width: 450px) {
