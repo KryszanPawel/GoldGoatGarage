@@ -363,6 +363,7 @@ getAspectRatio = (img) => {
 };
 
 injectLogoIfLongText = (infoText) => {
+  // injects img html with logo to the longer text
   let adder = 400;
   let node = gallery.querySelector(".text .description");
   node.innerHTML = infoText;
@@ -370,6 +371,7 @@ injectLogoIfLongText = (infoText) => {
   let pointerPixels = 60;
   if (nodeHeight > 250) {
     let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
+    logoHeight = 100;
     do {
       let pointer = Math.floor((pointerPixels / nodeHeight) * infoText.length);
       infoText =
@@ -379,9 +381,9 @@ injectLogoIfLongText = (infoText) => {
       node.innerHTML = infoText;
       nodeHeight = node.clientHeight;
       pointerPixels += adder;
-
+      logoHeight = node.querySelector("IMG").clientHeight;
       // console.log(pointerPixels + "   " + nodeHeight);
-    } while (pointerPixels < nodeHeight - 100);
+    } while (pointerPixels < nodeHeight - logoHeight);
 
     Array.from(node.querySelectorAll("IMG"))
       .filter((image, index) => (index + 1) % 2 == 0)
