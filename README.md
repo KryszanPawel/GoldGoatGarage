@@ -23,14 +23,6 @@
       world. That's why I decided to create a website for them, so that others
       could see and appreciate the incredible motorcycles that they were
       creating. <br /><br />
-      <!--       The website showcases Gold Goat Garage's work in
-      all its glory, featuring high-quality photos and detailed descriptions of
-      each custom build. It also includes information about the team and their
-      approach to motorcycle building, as well as a gallery of past projects.<br /><br />
-      I am proud to have been able to contribute to Gold Goat Garage's mission of
-      creating truly unique and inspired motorcycles. Their passion for their
-      craft is truly infectious, and I have no doubt that they will continue to
-      amaze and inspire with their incredible creations for years to come -->
     </p>
   </li>
   <li>
