@@ -373,16 +373,16 @@ injectLogoIfLongText = async (infoText, folderPath) => {
     let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
     logoHeight = 100;
     do {
-      let pointer = Math.floor((pointerPixels / nodeHeight) * infoText.length);
-      infoText =
-        infoText.substring(0, pointer) +
-        imageHTML +
-        infoText.substring(pointer, infoText.length);
+      let wordsArr = infoText.split(" ");
+      let wordPointer = Math.floor(
+        (pointerPixels / nodeHeight) * wordsArr.length
+      );
+      wordsArr.splice(wordPointer, 0, imageHTML);
+      infoText = wordsArr.join(" ");
       node.innerHTML = infoText;
       nodeHeight = node.clientHeight;
       pointerPixels += adder;
       logoHeight = node.querySelector("IMG").clientHeight + 20;
-      // console.log(pointerPixels + "   " + nodeHeight);
     } while (pointerPixels < nodeHeight - logoHeight);
 
     let nominalPhotoArr = await getPhotosList(folderPath);
