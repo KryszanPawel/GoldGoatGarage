@@ -364,7 +364,7 @@ getAspectRatio = (img) => {
 
 injectLogoIfLongText = async (infoText, folderPath) => {
   // injects img html with logo to the longer text
-  let adder = 400;
+  let adder = 300;
   let node = gallery.querySelector(".text .description");
   node.innerHTML = infoText;
   let nodeHeight = node.clientHeight;
@@ -390,10 +390,12 @@ injectLogoIfLongText = async (infoText, folderPath) => {
     let photosArr = [...nominalPhotoArr];
     var imgArr = Array.from(node.querySelectorAll("IMG"));
     imgArr.forEach((image, index) => {
-      image.src = `/static/images/${folderPath}/${photosArr.splice(
-        getRandomInt(photosArr.length),
-        1
-      )}`;
+      if (!index == 0) {
+        image.src = `/static/images/${folderPath}/${photosArr.splice(
+          getRandomInt(photosArr.length),
+          1
+        )}`;
+      }
       if ((index + 1) % 2 == 0) {
         image.classList.add("floatRight");
       }
