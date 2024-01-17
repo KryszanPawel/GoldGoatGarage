@@ -192,7 +192,7 @@ document.addEventListener("click", async (e) => {
     // get names of pictures in folder
     const list_of_photos = await getPhotosList(folder);
     //long description
-    injectLogoIfLongText(await getInfoText(folder));
+    await injectLogoIfLongText(await getInfoText(folder), folder);
 
     // sets first image to display
     const mainImage = gallery.querySelector(".main-photo img");
@@ -362,9 +362,9 @@ getAspectRatio = (img) => {
   return img.naturalWidth / img.naturalHeight;
 };
 
-injectLogoIfLongText = (infoText) => {
+injectLogoIfLongText = async (infoText, folderPath) => {
   // injects img html with logo to the longer text
-  let adder = 400;
+  let adder = 300;
   let node = gallery.querySelector(".text .description");
   node.innerHTML = infoText;
   let nodeHeight = node.clientHeight;
@@ -373,23 +373,39 @@ injectLogoIfLongText = (infoText) => {
     let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
     logoHeight = 100;
     do {
-      let pointer = Math.floor((pointerPixels / nodeHeight) * infoText.length);
-      infoText =
-        infoText.substring(0, pointer) +
-        imageHTML +
-        infoText.substring(pointer, infoText.length);
+      let wordsArr = infoText.split(" ");
+      let wordPointer = Math.floor(
+        (pointerPixels / nodeHeight) * wordsArr.length
+      );
+      wordsArr.splice(wordPointer, 0, imageHTML);
+      infoText = wordsArr.join(" ");
       node.innerHTML = infoText;
       nodeHeight = node.clientHeight;
       pointerPixels += adder;
-      logoHeight = node.querySelector("IMG").clientHeight;
-      // console.log(pointerPixels + "   " + nodeHeight);
+      logoHeight = node.querySelector("IMG").clientHeight + 20;
     } while (pointerPixels < nodeHeight - logoHeight);
 
-    Array.from(node.querySelectorAll("IMG"))
-      .filter((image, index) => (index + 1) % 2 == 0)
-      .forEach((image) => {
+    let nominalPhotoArr = await getPhotosList(folderPath);
+
+    let photosArr = [...nominalPhotoArr];
+    var imgArr = Array.from(node.querySelectorAll("IMG"));
+    imgArr.forEach((image, index) => {
+      if (!index == 0) {
+        image.src = `/static/images/${folderPath}/${photosArr.splice(
+          getRandomInt(photosArr.length),
+          1
+        )}`;
+      }
+      if ((index + 1) % 2 == 0) {
         image.classList.add("floatRight");
-        // console.log(image);
-      });
+      }
+      if (photosArr.length == 0) {
+        photosArr = nominalPhotoArr;
+      }
+    });
   }
 };
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
