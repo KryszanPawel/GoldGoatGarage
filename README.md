@@ -38,4 +38,4 @@
   <li>JS</li>
 </ul>
 
-<h5>Website still in development!</h5>
+<h5>Website still in development !</h5>
