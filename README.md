@@ -24,7 +24,9 @@
       could see and appreciate the incredible motorcycles that they were
       creating. <br /><br />
     </p>
+
   </li>
+
   <li>
     <h2>Check out on:</h2>
     <a href="https://goldgoatgarage.pages.dev/">Gold Goat Garage</a>
