@@ -91,9 +91,9 @@ header {
   z-index: -1;
 }
 header img {
-  max-height: 100%;
-  max-width: 100%;
-  transform: translateZ(-20px) scale(3.7);
+  max-height: auto;
+  max-width: 150%;
+  transform: translateZ(-50px) scale(4.2);
   z-index: -1;
 }
 .main-section {
