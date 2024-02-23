@@ -1,0 +1,75 @@
+[
+  {
+    "cardName": "Brixton BX125",
+    "pathToInfo": "../static/images/Brixton_BX125",
+    "cardPhoto": "../static/images/Brixton_BX125/1.jpg",
+    "isMovie": false,
+    "theme": "light",
+    "shortText": "&ensp;Czasami małe zmiany dają duże efekty. W tym motocyklu zastosowaliśmy kilka zmian kosmetycznych: kierunkowskazy mikro, akcesoryjne podnóżki, subtelna lampa tylna itd. A i zapomnieliśmy jeszcze o małym szczególe:<br />&ensp;CHROM... DUUUUŻO CHROMU. Powstał motocykl który mimo małej pojemności jest rasowym, wieczorowym wyjadaczem.W miejskim oświetleniu neonów czuje się najlepiej, bo efekt lustra jest niesamowity.",
+    "index": 7
+  },
+  {
+    "cardName": "Super Soco G-Spark",
+    "pathToInfo": "../static/images/Super Soco_TC-max_G-Spark",
+    "cardPhoto": "../static/images/Super Soco_TC-max_G-Spark/1.png",
+    "isMovie": false,
+    "theme": "dark",
+    "shortText": "&ensp;Pierwszy projekt oparty o motocykl w pełni elektryczny. Nadanie nowej, bardziej agresywnej sylwetki, pełnych kół oraz bocznych pasków led nadało mocno „filmowy” wygląd a każda przejażdżka zadziwia zarówno kierowcę jak i ludzi mijanych na ulicy. Mimo niewielkich gabarytów potrafi skutecznie przyciągnąć uwagę.",
+    "index": 6
+  },
+  {
+    "cardName": "SocoMovie",
+    "pathToInfo": "../static/images/Yamaha_TW125_TimberWill",
+    "cardPhoto": "../static/images/Super Soco_TC-max_G-Spark/video-Reels.mp4",
+    "isMovie": true,
+    "theme": "dark",
+    "shortText": "",
+    "index": 5
+  },
+  {
+    "cardName": "Yamaha TW125 TimberWill",
+    "pathToInfo": "../static/images/Yamaha_TW125_TimberWill",
+    "cardPhoto": "../static/images/Yamaha_TW125_TimberWill/1.jpg",
+    "isMovie": false,
+    "theme": "light",
+    "shortText": "&ensp;Przedstawiamy niesamowicie fajny gadżet do jazdy po lasach, polach i wszelkich nieużytkach. Mały leśny drwal do zadań specjalnych. Na grzyby, na ryby, do szukania łosia w parku. Mały pojemnością, wielki duchem.<br>&ensp;Cała naprzód, ku nowej przygodzie...",
+    "index": 4
+  },
+  {
+    "cardName": "Yamaha XJ900 SummerBee",
+    "pathToInfo": "../static/images/Yamaha_XJ900_Diversion_SummerBee",
+    "cardPhoto": "../static/images/Yamaha_XJ900_Diversion_SummerBee/1.jpg",
+    "isMovie": false,
+    "theme": "light",
+    "shortText": "&ensp;W świecie customowych motocykli jest grupa modeli które, z założenia nie są wdzięcznym tematem do przeróbek. Jednym z takich motocykli jest Yamaha XJ 900 Diversion. Trochę przyciężka, trochę za klasyczna i bez polotu. Powstała bulwarówka pełną gębą. Jest mocno, jest grubo, jest głośno i krzykliwie. Nie da się jej nie zauważyć, nie da się przejść obojętnie.<br>&ensp;Lato, lato wszędzie... niech nadejdzie.",
+    "index": 3
+  },
+  {
+    "cardName": "Yamaha XJ600 Tomato Board Tracker",
+    "pathToInfo": "../static/images/Yamaha_XJ600_3KM_Tomato_Board_Tracker",
+    "cardPhoto": "../static/images/Yamaha_XJ600_3KM_Tomato_Board_Tracker/1.jpg",
+    "isMovie": false,
+    "theme": "dark",
+    "shortText": "&ensp;Klasyczny Board Trucker w nowoczesnej odsłonie. Mocno zmodyfikowana rama, przednie zawieszenie skrócone o 12 cm, tylne o 8 cm. Siodło wykonane pod indywidualne zamówienie, clip-ony i klasyczne opony. Mocno zmodyfikowana wiązka elektryczna tak by motocykl wyglądał estetycznie i nic nie kłóciło się z surowy wyglądem.",
+    "index": 2
+  },
+  {
+    "cardName": "White Street Tracker",
+    "pathToInfo": "../static/images/Yamaha_XJ_600_Diversion_White_Street_Tracker",
+    "cardPhoto": "../static/images/Yamaha_XJ_600_Diversion_White_Street_Tracker/1.JPG",
+    "isMovie": false,
+    "theme": "dark",
+    "shortText": "&ensp;Jednoosobowe siodło, grube opony w stylu enduro, szeroka kierownica z poprzeczką oraz gumowe mieszki osłaniające lagi spowodowały, że niepozorny motocykl zyskał na wyrazistości. W serii motocykl wygląda jak wszystkie, po modernizacji nie da się obok niego przejść obojętnie.",
+    "index": 1
+  },
+  {
+    "cardName": "Suzuki VS800 British Racer",
+    "pathToInfo": "../static/images/Suzuki_VS_800_English_Racer",
+    "cardPhoto": "../static/images/Suzuki_VS_800_English_Racer/1.jpg",
+    "isMovie": false,
+    "theme": "light",
+    "shortText": "&ensp;Nasz pierwszy \"poważny\" projekt. Motocykl konkretnie obniżony, przód o 60, tył 50 mm. Malowanie w kolorze British Racing Green, złoty pas na baku oraz owinięte złotym bandażem tradycyjne drag-pipes. Szeroka kierownica w stylu drag bar i jednoosobowe siodło. 160 kg masy oraz większość momentu przy niskich obrotach. To wszystko powoduje, że ciężko jest na nim spokojnie usiedzieć a skrzyżowania pokonywane bokiem wchodzą w nawyk.<br>&ensp;Motocykl udowadniający, że nawet z małych pojemności powstają bobbery dające mega fun.",
+
+    "index": 0
+  }
+]

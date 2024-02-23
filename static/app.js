@@ -110,6 +110,130 @@ function removeSmallOnClick(e) {
   }
 }
 
+// LOAD ALL THE CARDS
+
+const breakPoint = 940;
+let currentWidth = window.innerWidth;
+let previousWidth = window.innerWidth;
+let isWide = currentWidth > breakPoint;
+
+const isResizeNeeded = (currentWidth, previousWidth, breakePoint) => {
+  if (currentWidth < 940 && isWide) {
+    isWide = !isWide;
+    return true;
+  } else if (currentWidth > 940 && !isWide) {
+    isWide = !isWide;
+    return true;
+  }
+  return false;
+};
+
+const cardElements = [];
+const loadCardsToDOM = async () => {
+  await fetch("../resources/cardSupplier.json")
+    .then((response) => response.json())
+    .then((json) => cardElements.push(...json));
+  cardElements.map((element) => new CardElement(element));
+  cardElements.sort((a, b) => b.index - a.index);
+  console.log(cardElements);
+  const projectSection = document.getElementById("projects");
+
+  const cardsHtmlElements = [];
+
+  cardElements.forEach((element) => {
+    const motorcycleCard = document.createElement("div");
+    motorcycleCard.classList.add("segment", element.theme);
+    if (!element.isMovie) {
+      const picture = document.createElement("IMG");
+      picture.src = element.cardPhoto;
+      picture.alt = element.cardName;
+      const title = document.createElement("H2");
+      title.innerText = element.cardName;
+      const paragraph = document.createElement("p");
+      paragraph.innerHTML = element.shortText;
+      motorcycleCard.appendChild(picture);
+      motorcycleCard.appendChild(title);
+      motorcycleCard.appendChild(paragraph);
+    } else {
+      motorcycleCard.classList.add("movie");
+      const video = document.createElement("video");
+      video.src = element.cardPhoto;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      motorcycleCard.appendChild(video);
+    }
+    cardsHtmlElements.push(motorcycleCard);
+  });
+
+  // build wide view
+
+  if (currentWidth > breakPoint) {
+    buildWideView();
+  } else {
+    buildMobileView();
+  }
+
+  window.addEventListener(
+    "resize",
+    (e) => {
+      currentWidth = window.innerWidth;
+      if (isResizeNeeded(currentWidth, previousWidth, breakPoint)) {
+        if (currentWidth > previousWidth) {
+          buildWideView();
+        } else {
+          buildMobileView();
+        }
+      }
+      previousWidth = currentWidth;
+    },
+    true
+  );
+
+  function buildWideView() {
+    projectSection.innerHTML = "";
+    const columnCointainer = document.createElement("div");
+    columnCointainer.classList.add("columnContainer");
+    const cardsLeftColumnDiv = document.createElement("div");
+    cardsLeftColumnDiv.classList.add("cards", "leftColumn");
+    const cardsRightColumnDiv = document.createElement("div");
+    cardsRightColumnDiv.classList.add("cards", "rightColumn");
+
+    const isUneven = cardsHtmlElements.length % 2 != 0;
+    let lastUnevenIndexDiv;
+
+    for (let index = 0; index < cardsHtmlElements.length; index++) {
+      if (index == cardsHtmlElements.length - 1 && isUneven) {
+        lastUnevenIndexDiv = document.createElement("div");
+        lastUnevenIndexDiv.classList.add("last");
+        lastUnevenIndexDiv.appendChild(cardsHtmlElements[index]);
+      } else {
+        index % 2 == 0
+          ? cardsLeftColumnDiv.appendChild(cardsHtmlElements[index])
+          : cardsRightColumnDiv.appendChild(cardsHtmlElements[index]);
+      }
+    }
+    projectSection.appendChild(columnCointainer);
+    columnCointainer.appendChild(cardsLeftColumnDiv);
+    columnCointainer.appendChild(cardsRightColumnDiv);
+    lastUnevenIndexDiv && projectSection.appendChild(lastUnevenIndexDiv);
+  }
+
+  function buildMobileView() {
+    projectSection.innerHTML = "";
+    const cardsColumnDiv = document.createElement("div");
+    cardsColumnDiv.classList.add("cards");
+
+    cardsHtmlElements.forEach((motorcycleCard, index) => {
+      cardsColumnDiv.appendChild(motorcycleCard);
+
+      projectSection.appendChild(cardsColumnDiv);
+    });
+  }
+};
+
+loadCardsToDOM();
+
 // observer keep track on footer to fire animation
 
 const observer = new IntersectionObserver((e) => {
@@ -408,4 +532,24 @@ injectLogoIfLongText = async (infoText, folderPath) => {
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+class CardElement {
+  constructor(
+    cardName,
+    carPhoto,
+    pathToInfo,
+    isMovie,
+    theme,
+    shortText,
+    index
+  ) {
+    this.cardName = cardName;
+    this.cardPhoto = carPhoto;
+    this.pathToInfo = pathToInfo;
+    this.isMovie = isMovie;
+    this.theme = theme;
+    this.shortText = shortText;
+    this.index = index;
+  }
 }
