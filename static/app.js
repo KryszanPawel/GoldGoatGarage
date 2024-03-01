@@ -118,10 +118,10 @@ let previousWidth = window.innerWidth;
 let isWide = currentWidth > breakPoint;
 
 const isResizeNeeded = (currentWidth, previousWidth, breakePoint) => {
-  if (currentWidth < 940 && isWide) {
+  if (currentWidth < breakPoint && isWide) {
     isWide = !isWide;
     return true;
-  } else if (currentWidth > 940 && !isWide) {
+  } else if (currentWidth > breakPoint && !isWide) {
     isWide = !isWide;
     return true;
   }
@@ -234,25 +234,62 @@ const loadCardsToDOM = async () => {
 
 loadCardsToDOM();
 
+// observer keep track on about-us section to fire animation
+
+const aboutUsObserver = new IntersectionObserver(
+  (e) => {
+    e.forEach((entry) => {
+      const goat = entry.target.querySelector(".goatLogo");
+      goat.style.opacity = "0";
+
+      // entry.target.parentElement
+      //   .querySelector(".cat1 img")
+      //   .style.removeProperty("animation-name");
+
+      // entry.target
+      //   .querySelectorAll(".border")
+      //   .forEach((border) => border.style.removeProperty("animation-name"));
+
+      // entry.target
+      //   .querySelectorAll(".paw")
+      //   .forEach((paw) => paw.style.removeProperty("animation-name"));
+
+      if (entry.isIntersecting) {
+        goat.style.opacity = "1";
+        entry.target.classList.remove("hidden");
+
+        return;
+      }
+    });
+  },
+  {
+    root: document.querySelector("#scrollArea"),
+    rootMargin: "0px",
+    threshold: 0.3,
+  }
+);
+
+//timeout to prevent firing animation before dom load
+
 // observer keep track on footer to fire animation
 
-const observer = new IntersectionObserver((e) => {
+const footerObserver = new IntersectionObserver((e) => {
   e.forEach((entry) => {
-    entry.target.style.removeProperty("animation-name");
+    // entry.target.style.removeProperty("animation-name");
 
-    entry.target.parentElement
-      .querySelector(".cat1 img")
-      .style.removeProperty("animation-name");
+    // entry.target.parentElement
+    //   .querySelector(".cat1 img")
+    //   .style.removeProperty("animation-name");
 
-    entry.target
-      .querySelectorAll(".border")
-      .forEach((border) => border.style.removeProperty("animation-name"));
+    // entry.target
+    //   .querySelectorAll(".border")
+    //   .forEach((border) => border.style.removeProperty("animation-name"));
 
-    entry.target
-      .querySelectorAll(".paw")
-      .forEach((paw) => paw.style.removeProperty("animation-name"));
+    // entry.target
+    //   .querySelectorAll(".paw")
+    //   .forEach((paw) => paw.style.removeProperty("animation-name"));
 
-    if (entry.isIntersecting) {
+    if (entry.intersectionRatio > 0) {
       entry.target.style.animationName = "openFooter";
 
       entry.target
@@ -272,7 +309,10 @@ const observer = new IntersectionObserver((e) => {
   });
 });
 
-observer.observe(document.querySelector("footer"));
+setTimeout(() => {
+  footerObserver.observe(document.querySelector("footer"));
+  aboutUsObserver.observe(document.querySelector(".about-us"));
+}, 500);
 
 // card opens galery on click
 
