@@ -1,5 +1,14 @@
 [
   {
+    "cardName": "Honda CM400T RocketMouse",
+    "pathToInfo": "../static/images/Honda_CM400_RocketMouse",
+    "cardPhoto": "../static/images/Honda_CM400_RocketMouse/2.jpg",
+    "isMovie": false,
+    "theme": "light",
+    "shortText": "&ensp;\"Nawet nie marzyłem o takim szczęściu wówczas, kiedy byłem tylko przydkim kaczątkiem\" Ponadczasowa baśń którą zna każdy, o tym, że nie należy oceniać innych po wyglądzie zewnętrznym a dobry czas może przyjść dla każdego. Podobnie rzecz miała się z Hondą CM400T, która wpadła w nasze ręce. Z japońskiego soft-choppera o przestarzałym już wyglądzie zrobiliśmy łabędzia... a raczej mysz... rakietową mysz. Rocket-Mouse",
+    "index": 8
+  },
+  {
     "cardName": "Brixton BX125",
     "pathToInfo": "../static/images/Brixton_BX125",
     "cardPhoto": "../static/images/Brixton_BX125/1.jpg",

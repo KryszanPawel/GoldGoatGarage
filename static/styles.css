@@ -556,13 +556,13 @@ span.border {
   background-color: #161516;
 }
 .burger.click > div:nth-child(1) {
-  transform: translate(0, 11.5px) rotateZ(-45deg);
+  transform: translate(0, 10.5px) rotateZ(-45deg);
 }
 .burger.click > div:nth-child(2) {
   opacity: 0;
 }
 .burger.click > div:nth-child(3) {
-  transform: translate(0, -11.5px) rotateZ(45deg);
+  transform: translate(0, -10.5px) rotateZ(45deg);
 }
 .burger div:nth-child(1) {
   top: calc(25% - 1.5px);
@@ -573,6 +573,17 @@ span.border {
 .burger div:nth-child(3) {
   top: calc(75% - 1.5px);
 }
+
+.moving .burger.click > div:nth-child(1) {
+  transform: translate(0, 6.5px) rotateZ(-45deg);
+}
+.moving .burger.click > div:nth-child(2) {
+  opacity: 0;
+}
+.moving .burger.click > div:nth-child(3) {
+  transform: translate(0, -6.5px) rotateZ(45deg);
+}
+
 .nav-items {
   align-items: center;
   align-self: self-start;
@@ -796,15 +807,6 @@ span.border {
       background-color: transparent;
     }
 
-    .burger.click > div:nth-child(1) {
-      transform: translate(0, 6.5px) rotateZ(-45deg);
-    }
-    .burger.click > div:nth-child(2) {
-      opacity: 0;
-    }
-    .burger.click > div:nth-child(3) {
-      transform: translate(0, -6.5px) rotateZ(45deg);
-    }
     .burger {
       right: 20px;
     }
