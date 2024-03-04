@@ -111,11 +111,13 @@ function removeSmallOnClick(e) {
 }
 
 // LOAD ALL THE CARDS
-
 const breakPoint = 940;
 let currentWidth = window.innerWidth;
 let previousWidth = window.innerWidth;
 let isWide = currentWidth > breakPoint;
+
+const aboutBreakPoint = 690;
+let isAboutWide = currentWidth > aboutBreakPoint;
 
 const isResizeNeeded = (currentWidth, previousWidth, breakePoint) => {
   if (currentWidth < breakPoint && isWide) {
@@ -128,17 +130,97 @@ const isResizeNeeded = (currentWidth, previousWidth, breakePoint) => {
   return false;
 };
 
+const isAboutUsResizeNeeded = (currentWidth, previousWidth) => {
+  if (currentWidth < aboutBreakPoint && isAboutWide) {
+    isAboutWide = !isAboutWide;
+    return true;
+  } else if (currentWidth > aboutBreakPoint && !isAboutWide) {
+    isAboutWide = !isAboutWide;
+
+    return true;
+  }
+  return false;
+};
+
+let aboutUsInfo = {};
+
+const aboutUsInfoSection = document.getElementById("about");
+const loadAboutUsSection = async () => {
+  await fetch("../resources/aboutUs.json")
+    .then((response) => response.json())
+    .then((json) => (aboutUsInfo = json));
+  aboutUsInfoSection.classList.add("hidden");
+
+  console.log(aboutUsInfo);
+
+  if (currentWidth > aboutBreakPoint) {
+    buildWideAboutUs();
+  } else {
+    buildMobileAboutUs();
+  }
+};
+
+loadAboutUsSection();
+
+function buildWideAboutUs() {
+  aboutUsInfoSection.innerHTML = "";
+  aboutUsInfoSection.classList.add(...["info", "about-us"]);
+
+  const goatLogo = document.createElement("IMG");
+  goatLogo.src = aboutUsInfo.goatLogo;
+  goatLogo.classList.add("goatLogo");
+  aboutUsInfoSection.appendChild(goatLogo);
+
+  const sectionWrapper = document.createElement("DIV");
+  sectionWrapper.classList.add("section-wrapper");
+
+  const title = document.createElement("H2");
+  title.innerText = aboutUsInfo.title;
+  sectionWrapper.appendChild(title);
+
+  const pararaphText = document.createElement("p");
+  pararaphText.innerHTML = aboutUsInfo.shortText + aboutUsInfo.longText;
+  sectionWrapper.appendChild(pararaphText);
+
+  aboutUsInfoSection.appendChild(sectionWrapper);
+}
+
+function buildMobileAboutUs() {
+  aboutUsInfoSection.innerHTML = "";
+  aboutUsInfoSection.classList = [];
+  aboutUsInfoSection.style.marginBottom = "5px";
+
+  const goatLogo = document.createElement("IMG");
+  goatLogo.src = aboutUsInfo.goatLogo;
+  goatLogo.classList.add("goatLogo");
+  aboutUsInfoSection.appendChild(goatLogo);
+
+  const aboutUsCard = document.createElement("div");
+  aboutUsCard.classList.add("segment", "dark");
+  const picture = document.createElement("IMG");
+  picture.src = aboutUsInfo.wheelIMG;
+  // picture.alt = element.cardName;
+  const title = document.createElement("H2");
+  title.innerText = aboutUsInfo.title;
+  const paragraph = document.createElement("p");
+  paragraph.innerHTML = aboutUsInfo.shortText;
+  aboutUsCard.appendChild(picture);
+  aboutUsCard.appendChild(title);
+  aboutUsCard.appendChild(paragraph);
+
+  aboutUsInfoSection.appendChild(aboutUsCard);
+}
+
 const cardElements = [];
+const projectSection = document.getElementById("projects");
+const cardsHtmlElements = [];
+
 const loadCardsToDOM = async () => {
   await fetch("../resources/cardSupplier.json")
     .then((response) => response.json())
     .then((json) => cardElements.push(...json));
   cardElements.map((element) => new CardElement(element));
   cardElements.sort((a, b) => b.index - a.index);
-  console.log(cardElements);
-  const projectSection = document.getElementById("projects");
-
-  const cardsHtmlElements = [];
 
   cardElements.forEach((element) => {
     const motorcycleCard = document.createElement("div");
@@ -165,74 +247,75 @@ const loadCardsToDOM = async () => {
     }
     cardsHtmlElements.push(motorcycleCard);
   });
-
-  // build wide view
-
   if (currentWidth > breakPoint) {
     buildWideView();
   } else {
     buildMobileView();
   }
-
-  window.addEventListener(
-    "resize",
-    (e) => {
-      currentWidth = window.innerWidth;
-      if (isResizeNeeded(currentWidth, previousWidth, breakPoint)) {
-        if (currentWidth > previousWidth) {
-          buildWideView();
-        } else {
-          buildMobileView();
-        }
-      }
-      previousWidth = currentWidth;
-    },
-    true
-  );
-
-  function buildWideView() {
-    projectSection.innerHTML = "";
-    const columnCointainer = document.createElement("div");
-    columnCointainer.classList.add("columnContainer");
-    const cardsLeftColumnDiv = document.createElement("div");
-    cardsLeftColumnDiv.classList.add("cards", "leftColumn");
-    const cardsRightColumnDiv = document.createElement("div");
-    cardsRightColumnDiv.classList.add("cards", "rightColumn");
-
-    const isUneven = cardsHtmlElements.length % 2 != 0;
-    let lastUnevenIndexDiv;
-
-    for (let index = 0; index < cardsHtmlElements.length; index++) {
-      if (index == cardsHtmlElements.length - 1 && isUneven) {
-        lastUnevenIndexDiv = document.createElement("div");
-        lastUnevenIndexDiv.classList.add("last");
-        lastUnevenIndexDiv.appendChild(cardsHtmlElements[index]);
-      } else {
-        index % 2 == 0
-          ? cardsLeftColumnDiv.appendChild(cardsHtmlElements[index])
-          : cardsRightColumnDiv.appendChild(cardsHtmlElements[index]);
-      }
-    }
-    projectSection.appendChild(columnCointainer);
-    columnCointainer.appendChild(cardsLeftColumnDiv);
-    columnCointainer.appendChild(cardsRightColumnDiv);
-    lastUnevenIndexDiv && projectSection.appendChild(lastUnevenIndexDiv);
-  }
-
-  function buildMobileView() {
-    projectSection.innerHTML = "";
-    const cardsColumnDiv = document.createElement("div");
-    cardsColumnDiv.classList.add("cards");
-
-    cardsHtmlElements.forEach((motorcycleCard, index) => {
-      cardsColumnDiv.appendChild(motorcycleCard);
-
-      projectSection.appendChild(cardsColumnDiv);
-    });
-  }
 };
 
 loadCardsToDOM();
+
+function buildWideView() {
+  projectSection.innerHTML = "";
+  const columnCointainer = document.createElement("div");
+  columnCointainer.classList.add("columnContainer");
+  const cardsLeftColumnDiv = document.createElement("div");
+  cardsLeftColumnDiv.classList.add("cards", "leftColumn");
+  const cardsRightColumnDiv = document.createElement("div");
+  cardsRightColumnDiv.classList.add("cards", "rightColumn");
+
+  const isUneven = cardsHtmlElements.length % 2 != 0;
+  let lastUnevenIndexDiv;
+
+  for (let index = 0; index < cardsHtmlElements.length; index++) {
+    if (index == cardsHtmlElements.length - 1 && isUneven) {
+      lastUnevenIndexDiv = document.createElement("div");
+      lastUnevenIndexDiv.classList.add("last");
+      lastUnevenIndexDiv.appendChild(cardsHtmlElements[index]);
+    } else {
+      index % 2 == 0
+        ? cardsLeftColumnDiv.appendChild(cardsHtmlElements[index])
+        : cardsRightColumnDiv.appendChild(cardsHtmlElements[index]);
+    }
+  }
+  projectSection.appendChild(columnCointainer);
+  columnCointainer.appendChild(cardsLeftColumnDiv);
+  columnCointainer.appendChild(cardsRightColumnDiv);
+  lastUnevenIndexDiv && projectSection.appendChild(lastUnevenIndexDiv);
+}
+
+function buildMobileView() {
+  projectSection.innerHTML = "";
+  const cardsColumnDiv = document.createElement("div");
+  cardsColumnDiv.classList.add("cards");
+
+  cardsHtmlElements.forEach((motorcycleCard, index) => {
+    cardsColumnDiv.appendChild(motorcycleCard);
+
+    projectSection.appendChild(cardsColumnDiv);
+  });
+}
+
+window.addEventListener("resize", (e) => {
+  currentWidth = window.innerWidth;
+  if (isResizeNeeded(currentWidth, previousWidth, breakPoint)) {
+    if (currentWidth > previousWidth) {
+      buildWideView();
+    } else {
+      buildMobileView();
+    }
+  }
+
+  if (isAboutUsResizeNeeded(currentWidth, previousWidth)) {
+    if (currentWidth > previousWidth) {
+      buildWideAboutUs();
+    } else {
+      buildMobileAboutUs();
+    }
+  }
+  previousWidth = currentWidth;
+});
 
 // observer keep track on about-us section to fire animation
 
@@ -241,18 +324,6 @@ const aboutUsObserver = new IntersectionObserver(
     e.forEach((entry) => {
       const goat = entry.target.querySelector(".goatLogo");
       goat.style.opacity = "0";
-
-      // entry.target.parentElement
-      //   .querySelector(".cat1 img")
-      //   .style.removeProperty("animation-name");
-
-      // entry.target
-      //   .querySelectorAll(".border")
-      //   .forEach((border) => border.style.removeProperty("animation-name"));
-
-      // entry.target
-      //   .querySelectorAll(".paw")
-      //   .forEach((paw) => paw.style.removeProperty("animation-name"));
 
       if (entry.isIntersecting) {
         goat.style.opacity = "1";
@@ -275,20 +346,6 @@ const aboutUsObserver = new IntersectionObserver(
 
 const footerObserver = new IntersectionObserver((e) => {
   e.forEach((entry) => {
-    // entry.target.style.removeProperty("animation-name");
-
-    // entry.target.parentElement
-    //   .querySelector(".cat1 img")
-    //   .style.removeProperty("animation-name");
-
-    // entry.target
-    //   .querySelectorAll(".border")
-    //   .forEach((border) => border.style.removeProperty("animation-name"));
-
-    // entry.target
-    //   .querySelectorAll(".paw")
-    //   .forEach((paw) => paw.style.removeProperty("animation-name"));
-
     if (entry.intersectionRatio > 0) {
       entry.target.style.animationName = "openFooter";
 
@@ -311,7 +368,7 @@ const footerObserver = new IntersectionObserver((e) => {
 
 setTimeout(() => {
   footerObserver.observe(document.querySelector("footer"));
-  aboutUsObserver.observe(document.querySelector(".about-us"));
+  aboutUsObserver.observe(document.querySelector("#about"));
 }, 500);
 
 // card opens galery on click
