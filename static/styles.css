@@ -601,15 +601,15 @@ span.border {
 .nav-items li {
   margin: 0 20px;
 }
-.item {
+.navigationItem {
   color: var(--light-gold);
   position: relative;
   text-decoration: none;
   transition: left 0.5s;
   white-space: nowrap;
 }
-.item::before,
-.item::after {
+.navigationItem::before,
+.navigationItem::after {
   background-color: transparent;
   content: "";
   height: 130%;
@@ -617,7 +617,7 @@ span.border {
   transition: transform 0.4s;
   width: 122%;
 }
-.item::before {
+.navigationItem::before {
   border-bottom: solid;
   border-bottom-left-radius: 5px;
   border-color: #c89c47;
@@ -628,7 +628,7 @@ span.border {
   transform: scale(0);
   transform-origin: bottom left;
 }
-.item::after {
+.navigationItem::after {
   border-color: #c89c47;
   border-right: solid;
   border-top: solid;
@@ -639,11 +639,11 @@ span.border {
   transform: scale(0);
   transform-origin: top right;
 }
-.item:hover {
+.navigationItem:hover {
   color: #c89c47;
 }
-.item:hover::before,
-.item:hover::after {
+.navigationItem:hover::before,
+.navigationItem:hover::after {
   transform: scale(1);
 }
 .navbar .goat {
@@ -816,7 +816,7 @@ span.border {
       transform-origin: left;
       width: 100%;
     }
-    .item {
+    .navigationItem {
       left: 700px;
     }
     .logo {
@@ -834,12 +834,12 @@ span.border {
       transform: scaleX(1);
       width: 100%;
     }
-    .small-onclick .item {
+    .small-onclick .navigationItem {
       color: var(--hover-dark);
       left: 0;
     }
-    .small-onclick .item::before,
-    .small-onclick .item::after {
+    .small-onclick .navigationItem::before,
+    .small-onclick .navigationItem::after {
       border-color: var(--hover-dark);
     }
     @keyframes openmini {

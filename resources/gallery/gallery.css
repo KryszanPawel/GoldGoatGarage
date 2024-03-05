@@ -1,16 +1,7 @@
 .photo-gallery {
-  /* display: none; */
   color: #c89c47;
   background-color: #131313;
   padding-top: 40px;
-  height: 100vh;
-  left: 0;
-  position: fixed;
-  top: 0;
-  /* transform: scale(0); */
-  width: 100vw;
-  z-index: 999;
-  overflow-y: scroll;
 }
 
 .photo-gallery p {
@@ -27,7 +18,7 @@
   position: relative;
   z-index: 1000;
 }
-.photo-gallery h2::after {
+h2::after {
   position: absolute;
   content: "";
   left: 0;

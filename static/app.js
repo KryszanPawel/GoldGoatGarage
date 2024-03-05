@@ -51,7 +51,7 @@ burger.addEventListener("mouseup", openSmallOnClick, { once: true });
 function openSmallOnClick() {
   // CLEARS ALL NOT NESESSERY CLASSES
   clearAllClasses();
-  document.querySelectorAll(".item").forEach((item, index) => {
+  document.querySelectorAll(".navigationItem").forEach((item, index) => {
     const delay = 0.1 + index / 10;
     item.style.transitionDelay = `${delay}s`;
   });
@@ -79,7 +79,7 @@ function clearAllClasses() {
 
 function removeSmallOnClick(e) {
   // CLOSES SMALL NAVBAR AND REMOVES EVENT LISTENER AFTER THAT
-  itemList = document.querySelectorAll(".item");
+  itemList = document.querySelectorAll(".navigationItem");
   if (
     !document.querySelector(".navbar").contains(e.target) ||
     burger.contains(e.target) ||
@@ -150,8 +150,6 @@ const loadAboutUsSection = async () => {
     .then((response) => response.json())
     .then((json) => (aboutUsInfo = json));
   aboutUsInfoSection.classList.add("hidden");
-
-  console.log(aboutUsInfo);
 
   if (currentWidth > aboutBreakPoint) {
     buildWideAboutUs();
@@ -371,16 +369,13 @@ setTimeout(() => {
   aboutUsObserver.observe(document.querySelector("#about"));
 }, 500);
 
-// card opens galery on click
+// card opens gallery on click
 
-document.addEventListener("click", async (e) => {
+document.querySelector("#projects").addEventListener("click", async (e) => {
   if (
     e.target.parentNode.classList.contains("segment") ||
     e.target.classList.contains("segment")
   ) {
-    // remove all existing event listeners to close gallery - needed to close properly
-    document.removeEventListener("keydown", esc);
-    gallery.querySelector(".close").removeEventListener("click", crossClose);
     if (
       e.target.parentNode.classList.contains("movie") ||
       e.target.classList.contains("movie")
@@ -393,58 +388,90 @@ document.addEventListener("click", async (e) => {
         ? url.substring(0, url.indexOf("#gallery"))
         : url;
     // add #gallery to url (needed to control browser back button)
-    window.location.assign(url + "#gallery");
+
     let img;
     if (e.target.classList.contains("segment"))
       img = e.target.querySelector("IMG");
     if (e.target.parentNode.classList.contains("segment"))
       img = e.target.parentNode.querySelector("IMG");
 
-    // console.log(e.target);
+    // gallery.style.background = `url(${img.src}) no-repeat black`;
+    // gallery.style.backgroundPosition = `center`;
+    // gallery.style.backgroundSize = `125%`;
 
-    gallery.style.background = `url(${img.src}) no-repeat black`;
-    gallery.style.backgroundPosition = `center`;
-    gallery.style.backgroundSize = `125%`;
+    // // find folder name in src of an image
+    window.location.assign(url + "#gallery");
+    const folder = img.src.split("/").slice(0, -1).join("/");
 
-    // find folder name in src of an image
-    const folder = img.src.split("/").at(-2);
-    // console.log(folder);
+    const gallery = document.createElement("DIV");
+    gallery.classList.add("photo-gallery");
+
+    const container = document.createElement("DIV");
+    container.classList.add("container");
+
+    const introContainer = document.createElement("DIV");
+    introContainer.classList.add("intro");
+
+    const h2 = document.createElement("H2");
+    h2.classList.add("text-center");
+    h2.textContent = e.target.parentElement.querySelector("h2").innerText;
+    introContainer.appendChild(h2);
+
+    const rowPhotos = document.createElement("DIV");
+    rowPhotos.classList.add("row", "photos");
+
+    container.appendChild(introContainer);
+    container.appendChild(rowPhotos);
+    gallery.appendChild(container);
+
+    // gallery.innerHTML =
+    //   '<div class="container"><div class="intro"><h2 class="text-center">HONDA CM400T RocketMouse</h2></div><div class="row photos"></div></div>';
+    async function printPhotos() {
+      const photos = await getPhotosList(folder);
+      const photosRow = gallery.querySelector(".photos");
+      photos.forEach((photo) => {
+        const photoDiv = document.createElement("DIV");
+        photoDiv.classList.add("col-sm-6", "col-md-4", "col-lg-3", "item");
+        const a = document.createElement("A");
+        a.href = `${folder}/${photo}`;
+        a.setAttribute("data-lightbox", "photos");
+        const img = document.createElement("IMG");
+        img.classList.add("img-fluid");
+        img.src = `${folder}/${photo}`;
+        a.appendChild(img);
+        photoDiv.appendChild(a);
+        photosRow.appendChild(photoDiv);
+      });
+      console.log(photos);
+    }
+
+    printPhotos();
+
+    document.body.appendChild(gallery);
+
+    // window.location.assign(`/resources/gallery/gallery.html?${folder}`);
 
     // get names of pictures in folder
-    const list_of_photos = await getPhotosList(folder);
-    //long description
-    await injectLogoIfLongText(await getInfoText(folder), folder);
 
-    // sets first image to display
-    const mainImage = gallery.querySelector(".main-photo img");
-    mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
-    // sets title of a project
-    gallery.querySelector(".text .title").innerText =
-      e.target.parentElement.querySelector("h2").innerText;
+    // //long description
 
-    // creates gallery image right after load of chosen project
-    mainImage.addEventListener(
-      "load",
-      () => {
-        gallery.classList.add("gallery-visible");
-      },
-      { once: true }
-    );
+    // // sets first image to display
+    // const mainImage = gallery.querySelector(".main-photo img");
+    // mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
+    // // sets title of a project
+    // gallery.querySelector(".text .title").innerText =
+    //   e.target.parentElement.querySelector("h2").innerText;
 
-    gallery.scrollTop = 0;
+    // // creates gallery image right after load of chosen project
+    // mainImage.addEventListener(
+    //   "load",
+    //   () => {
+    //     gallery.classList.add("gallery-visible");
+    //   },
+    //   { once: true }
+    // );
 
-    function closeGallery() {
-      gallery.querySelector(".close").removeEventListener("click", crossClose);
-      document.removeEventListener("keydown", esc);
-      gallery.style.removeProperty(...["background"]);
-      gallery.classList.remove("gallery-visible");
-      let preCloseHash = window.location.hash;
-      // console.log(preCloseHash);
-      window.location.hash =
-        preCloseHash.indexOf("#gallery") > -1
-          ? preCloseHash.substring(0, preCloseHash.indexOf("#gallery"))
-          : preCloseHash;
-    }
+    // gallery.scrollTop = 0;
 
     // close gallery on back browser button
 
@@ -454,90 +481,16 @@ document.addEventListener("click", async (e) => {
       }
     };
 
-    gallery
-      .querySelector(".close")
-      .addEventListener("click", crossClose, { once: true });
-
-    // close gallery by esc button and control gallery by arrows
-    arrowsReation = (e) => {
-      if (e.key === "ArrowRight") gallery.querySelector(".forward").click();
-      if (e.key === "ArrowLeft") gallery.querySelector(".backward").click();
-      if (!gallery.classList.contains("gallery-visible")) {
-        document.removeEventListener("keydown", arrowsReation);
-      }
-    };
-    gallery.addEventListener("keydown", arrowsReation);
-
     document.addEventListener("keydown", esc, { once: true });
-
-    //event listener to forward button
-    gallery.querySelector(".forward").addEventListener("click", () => {
-      const currentImage = gallery.querySelector(".main-photo img");
-      const currentIndex = list_of_photos.indexOf(
-        currentImage.src.split("/").at(-1)
-      );
-      mainImage.style.opacity = `0`;
-      mainImage.parentElement.style.opacity = `0`;
-      mainImage.addEventListener(
-        "transitionend",
-        () => {
-          if (currentIndex < list_of_photos.length - 1) {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[currentIndex + 1]
-            }`;
-          } else {
-            mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
-          }
-          mainImage.addEventListener(
-            "load",
-            () => {
-              mainImage.parentElement.style.opacity = `1`;
-              mainImage.style.opacity = `1`;
-            },
-            { once: true }
-          );
-        },
-        { once: true }
-      );
-    });
-
-    //event listener to backward button
-    gallery.querySelector(".backward").addEventListener("click", () => {
-      const currentImage = gallery.querySelector(".main-photo img");
-      const currentIndex = list_of_photos.indexOf(
-        currentImage.src.split("/").at(-1)
-      );
-      mainImage.style.opacity = `0`;
-      mainImage.parentElement.style.opacity = `0`;
-      mainImage.addEventListener(
-        "transitionend",
-        () => {
-          if (currentIndex > 0) {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[currentIndex - 1]
-            }`;
-          } else {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[list_of_photos.length - 1]
-            }`;
-          }
-          mainImage.addEventListener(
-            "load",
-            () => {
-              mainImage.parentElement.style.opacity = `1`;
-              mainImage.style.opacity = `1`;
-            },
-            { once: true }
-          );
-        },
-        { once: true }
-      );
-    });
   }
 });
 
+function closeGallery() {
+  document.body.removeChild(document.querySelector(".photo-gallery"));
+}
+
 async function getPhotosList(folder) {
-  const response = await fetch(`/static/images/${folder}/info.json`)
+  const response = await fetch(`${folder}/info.json`)
     .then((response) => response.json())
     .then((data) => data["picList"]);
   return response;
@@ -563,9 +516,6 @@ esc = (e) => {
     if (document.location.hash.indexOf("#gallery") >= 0) {
       back();
     }
-    if (!gallery.classList.contains("gallery-visible")) {
-      document.removeEventListener("keydown", esc);
-    }
   }
 };
 
@@ -581,50 +531,6 @@ function back() {
 
 getAspectRatio = (img) => {
   return img.naturalWidth / img.naturalHeight;
-};
-
-injectLogoIfLongText = async (infoText, folderPath) => {
-  // injects img html with logo to the longer text
-  let adder = 300;
-  let node = gallery.querySelector(".text .description");
-  node.innerHTML = infoText;
-  let nodeHeight = node.clientHeight;
-  let pointerPixels = 60;
-  if (nodeHeight > 250) {
-    let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
-    logoHeight = 100;
-    do {
-      let wordsArr = infoText.split(" ");
-      let wordPointer = Math.floor(
-        (pointerPixels / nodeHeight) * wordsArr.length
-      );
-      wordsArr.splice(wordPointer, 0, imageHTML);
-      infoText = wordsArr.join(" ");
-      node.innerHTML = infoText;
-      nodeHeight = node.clientHeight;
-      pointerPixels += adder;
-      logoHeight = node.querySelector("IMG").clientHeight + 20;
-    } while (pointerPixels < nodeHeight - logoHeight);
-
-    let nominalPhotoArr = await getPhotosList(folderPath);
-
-    let photosArr = [...nominalPhotoArr];
-    var imgArr = Array.from(node.querySelectorAll("IMG"));
-    imgArr.forEach((image, index) => {
-      if (!index == 0) {
-        image.src = `/static/images/${folderPath}/${photosArr.splice(
-          getRandomInt(photosArr.length),
-          1
-        )}`;
-      }
-      if ((index + 1) % 2 == 0) {
-        image.classList.add("floatRight");
-      }
-      if (photosArr.length == 0) {
-        photosArr = nominalPhotoArr;
-      }
-    });
-  }
 };
 
 function getRandomInt(max) {
