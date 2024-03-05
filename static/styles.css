@@ -1,3 +1,9 @@
+*,
+::after,
+::before {
+  box-sizing: initial;
+}
+
 :root {
   --dark: #161516;
   --goat-img: rgba(211, 205, 64, 1);
@@ -121,6 +127,7 @@ header img {
   gap: 7px;
 }
 .columnContainer {
+  width: 100%;
   display: flex;
   flex-flow: row;
   gap: 7px;
@@ -234,7 +241,8 @@ h2 {
   content: "";
   position: absolute;
   background-color: rgb(35, 35, 19);
-  bottom: -51.5px;
+  bottom: -50px;
+  box-sizing: border-box;
   border: #8e793e solid 2px;
   border-top: none;
   border-radius: 0 0 5px 5px;
@@ -292,7 +300,8 @@ h2 {
   content: "";
   position: absolute;
   background-color: rgb(35, 35, 19);
-  top: -51.5px;
+  top: -50px;
+  box-sizing: border-box;
   border: #8e793e solid 2px;
   border-bottom: none;
   border-radius: 5px 5px 0 0;
@@ -338,6 +347,7 @@ h2 {
   display: flex;
   flex-direction: row;
   font-weight: 500;
+  font-size: 23px;
   height: 56px;
   justify-content: space-between;
   margin: 0;
@@ -422,7 +432,8 @@ footer h3 {
     width: 0%;
   }
 }
-span.border {
+span.border1,
+span.border2 {
   animation-duration: 3s;
   border-color: #8e793e;
   border-top: solid 5px;
@@ -518,6 +529,8 @@ span.border {
 }
 /* NAVBAR */
 .navbar {
+  padding: 0;
+  flex-wrap: nowrap;
   align-items: center;
   display: flex;
   height: 80px;
@@ -526,7 +539,7 @@ span.border {
   position: absolute;
   top: 0;
   transition: background-color 1s, top 0.3s, height 0.3s;
-  width: calc(100% - 8px);
+  width: calc(100% - 10px);
   z-index: 5;
 }
 

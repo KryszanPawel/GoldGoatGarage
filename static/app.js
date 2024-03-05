@@ -347,9 +347,10 @@ const footerObserver = new IntersectionObserver((e) => {
     if (entry.intersectionRatio > 0) {
       entry.target.style.animationName = "openFooter";
 
-      entry.target
-        .querySelectorAll(".border")
-        .forEach((border) => (border.style.animationName = "borderAnimation"));
+      entry.target.querySelector(".border1").style.animationName =
+        "borderAnimation";
+      entry.target.querySelector(".border2").style.animationName =
+        "borderAnimation";
 
       entry.target
         .querySelectorAll(".paw")
@@ -395,10 +396,6 @@ document.querySelector("#projects").addEventListener("click", async (e) => {
     if (e.target.parentNode.classList.contains("segment"))
       img = e.target.parentNode.querySelector("IMG");
 
-    // gallery.style.background = `url(${img.src}) no-repeat black`;
-    // gallery.style.backgroundPosition = `center`;
-    // gallery.style.backgroundSize = `125%`;
-
     // // find folder name in src of an image
     window.location.assign(url + "#gallery");
     const folder = img.src.split("/").slice(0, -1).join("/");
@@ -438,6 +435,7 @@ document.querySelector("#projects").addEventListener("click", async (e) => {
         const img = document.createElement("IMG");
         img.classList.add("img-fluid");
         img.src = `${folder}/${photo}`;
+        img.style.maxHeight = "200px";
         a.appendChild(img);
         photoDiv.appendChild(a);
         photosRow.appendChild(photoDiv);
@@ -449,44 +447,22 @@ document.querySelector("#projects").addEventListener("click", async (e) => {
 
     document.body.appendChild(gallery);
 
-    // window.location.assign(`/resources/gallery/gallery.html?${folder}`);
-
-    // get names of pictures in folder
-
-    // //long description
-
-    // // sets first image to display
-    // const mainImage = gallery.querySelector(".main-photo img");
-    // mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
-    // // sets title of a project
-    // gallery.querySelector(".text .title").innerText =
-    //   e.target.parentElement.querySelector("h2").innerText;
-
-    // // creates gallery image right after load of chosen project
-    // mainImage.addEventListener(
-    //   "load",
-    //   () => {
-    //     gallery.classList.add("gallery-visible");
-    //   },
-    //   { once: true }
-    // );
-
-    // gallery.scrollTop = 0;
-
-    // close gallery on back browser button
+    document.addEventListener("keydown", esc, { once: true });
 
     window.onhashchange = function () {
       if (window.location.href.indexOf("#gallery") < 0) {
         closeGallery();
       }
     };
-
-    document.addEventListener("keydown", esc, { once: true });
   }
 });
 
 function closeGallery() {
   document.body.removeChild(document.querySelector(".photo-gallery"));
+
+  document.removeEventListener("keydown", esc);
+  document.querySelector("#lightbox").style.display = "none";
+  document.querySelector("#lightboxOverlay").style.display = "none";
 }
 
 async function getPhotosList(folder) {

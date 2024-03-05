@@ -12,6 +12,11 @@
   z-index: 999;
   overflow-y: scroll;
 }
+.photo-gallery *,
+.photo-gallery ::after,
+.photo-gallery ::before {
+  box-sizing: border-box !important;
+}
 
 .photo-gallery p {
   color: #7d8285;
@@ -61,8 +66,14 @@
 
 .photo-gallery .photos {
   padding-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .photo-gallery .item {
   padding-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+.photo-gallery .item img {
+  border: solid #7d8285 2px;
 }
