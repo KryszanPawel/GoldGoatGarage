@@ -415,27 +415,24 @@ document.querySelector("#projects").addEventListener("click", async (e) => {
     introContainer.appendChild(h2);
 
     const rowPhotos = document.createElement("DIV");
-    rowPhotos.classList.add("row", "photos");
+    rowPhotos.classList.add("photos");
 
     container.appendChild(introContainer);
     container.appendChild(rowPhotos);
     gallery.appendChild(container);
 
-    // gallery.innerHTML =
-    //   '<div class="container"><div class="intro"><h2 class="text-center">HONDA CM400T RocketMouse</h2></div><div class="row photos"></div></div>';
     async function printPhotos() {
       const photos = await getPhotosList(folder);
       const photosRow = gallery.querySelector(".photos");
       photos.forEach((photo) => {
         const photoDiv = document.createElement("DIV");
-        photoDiv.classList.add("col-sm-6", "col-md-4", "col-lg-3", "item");
+        photoDiv.classList.add("item");
         const a = document.createElement("A");
         a.href = `${folder}/${photo}`;
         a.setAttribute("data-lightbox", "photos");
         const img = document.createElement("IMG");
         img.classList.add("img-fluid");
         img.src = `${folder}/${photo}`;
-        img.style.maxHeight = "200px";
         a.appendChild(img);
         photoDiv.appendChild(a);
         photosRow.appendChild(photoDiv);
