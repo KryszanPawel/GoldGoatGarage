@@ -65,15 +65,20 @@
 }
 
 .photo-gallery .photos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
   padding-bottom: 20px;
   margin-bottom: 30px;
 }
 
 .photo-gallery .item {
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   display: flex;
   justify-content: center;
 }
 .photo-gallery .item img {
   border: solid #7d8285 2px;
+  height: 200px;
 }
