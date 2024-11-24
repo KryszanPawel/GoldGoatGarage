@@ -51,7 +51,7 @@ burger.addEventListener("mouseup", openSmallOnClick, { once: true });
 function openSmallOnClick() {
   // CLEARS ALL NOT NESESSERY CLASSES
   clearAllClasses();
-  document.querySelectorAll(".item").forEach((item, index) => {
+  document.querySelectorAll(".navigationItem").forEach((item, index) => {
     const delay = 0.1 + index / 10;
     item.style.transitionDelay = `${delay}s`;
   });
@@ -79,7 +79,7 @@ function clearAllClasses() {
 
 function removeSmallOnClick(e) {
   // CLOSES SMALL NAVBAR AND REMOVES EVENT LISTENER AFTER THAT
-  itemList = document.querySelectorAll(".item");
+  itemList = document.querySelectorAll(".navigationItem");
   if (
     !document.querySelector(".navbar").contains(e.target) ||
     burger.contains(e.target) ||
@@ -111,34 +111,114 @@ function removeSmallOnClick(e) {
 }
 
 // LOAD ALL THE CARDS
-
 const breakPoint = 940;
 let currentWidth = window.innerWidth;
 let previousWidth = window.innerWidth;
 let isWide = currentWidth > breakPoint;
 
+const aboutBreakPoint = 690;
+let isAboutWide = currentWidth > aboutBreakPoint;
+
 const isResizeNeeded = (currentWidth, previousWidth, breakePoint) => {
-  if (currentWidth < 940 && isWide) {
+  if (currentWidth < breakPoint && isWide) {
     isWide = !isWide;
     return true;
-  } else if (currentWidth > 940 && !isWide) {
+  } else if (currentWidth > breakPoint && !isWide) {
     isWide = !isWide;
     return true;
   }
   return false;
 };
 
+const isAboutUsResizeNeeded = (currentWidth, previousWidth) => {
+  if (currentWidth < aboutBreakPoint && isAboutWide) {
+    isAboutWide = !isAboutWide;
+    return true;
+  } else if (currentWidth > aboutBreakPoint && !isAboutWide) {
+    isAboutWide = !isAboutWide;
+
+    return true;
+  }
+  return false;
+};
+
+let aboutUsInfo = {};
+
+const aboutUsInfoSection = document.getElementById("about");
+const loadAboutUsSection = async () => {
+  await fetch("../resources/aboutUs.json")
+    .then((response) => response.json())
+    .then((json) => (aboutUsInfo = json));
+  aboutUsInfoSection.classList.add("hidden");
+
+  if (currentWidth > aboutBreakPoint) {
+    buildWideAboutUs();
+  } else {
+    buildMobileAboutUs();
+  }
+};
+
+loadAboutUsSection();
+
+function buildWideAboutUs() {
+  aboutUsInfoSection.innerHTML = "";
+  aboutUsInfoSection.classList.add(...["info", "about-us"]);
+
+  const goatLogo = document.createElement("IMG");
+  goatLogo.src = aboutUsInfo.goatLogo;
+  goatLogo.classList.add("goatLogo");
+  aboutUsInfoSection.appendChild(goatLogo);
+
+  const sectionWrapper = document.createElement("DIV");
+  sectionWrapper.classList.add("section-wrapper");
+
+  const title = document.createElement("H2");
+  title.innerText = aboutUsInfo.title;
+  sectionWrapper.appendChild(title);
+
+  const pararaphText = document.createElement("p");
+  pararaphText.innerHTML = aboutUsInfo.shortText + aboutUsInfo.longText;
+  sectionWrapper.appendChild(pararaphText);
+
+  aboutUsInfoSection.appendChild(sectionWrapper);
+}
+
+function buildMobileAboutUs() {
+  aboutUsInfoSection.innerHTML = "";
+  aboutUsInfoSection.classList = [];
+  aboutUsInfoSection.style.marginBottom = "5px";
+
+  const goatLogo = document.createElement("IMG");
+  goatLogo.src = aboutUsInfo.goatLogo;
+  goatLogo.classList.add("goatLogo");
+  aboutUsInfoSection.appendChild(goatLogo);
+
+  const aboutUsCard = document.createElement("div");
+  aboutUsCard.classList.add("segment", "dark");
+  const picture = document.createElement("IMG");
+  picture.src = aboutUsInfo.wheelIMG;
+  // picture.alt = element.cardName;
+  const title = document.createElement("H2");
+  title.innerText = aboutUsInfo.title;
+  const paragraph = document.createElement("p");
+  paragraph.innerHTML = aboutUsInfo.shortText;
+  aboutUsCard.appendChild(picture);
+  aboutUsCard.appendChild(title);
+  aboutUsCard.appendChild(paragraph);
+
+  aboutUsInfoSection.appendChild(aboutUsCard);
+}
+
 const cardElements = [];
+const projectSection = document.getElementById("projects");
+const cardsHtmlElements = [];
+
 const loadCardsToDOM = async () => {
   await fetch("../resources/cardSupplier.json")
     .then((response) => response.json())
     .then((json) => cardElements.push(...json));
   cardElements.map((element) => new CardElement(element));
   cardElements.sort((a, b) => b.index - a.index);
-  console.log(cardElements);
-  const projectSection = document.getElementById("projects");
-
-  const cardsHtmlElements = [];
 
   cardElements.forEach((element) => {
     const motorcycleCard = document.createElement("div");
@@ -165,99 +245,112 @@ const loadCardsToDOM = async () => {
     }
     cardsHtmlElements.push(motorcycleCard);
   });
-
-  // build wide view
-
   if (currentWidth > breakPoint) {
     buildWideView();
   } else {
     buildMobileView();
   }
-
-  window.addEventListener(
-    "resize",
-    (e) => {
-      currentWidth = window.innerWidth;
-      if (isResizeNeeded(currentWidth, previousWidth, breakPoint)) {
-        if (currentWidth > previousWidth) {
-          buildWideView();
-        } else {
-          buildMobileView();
-        }
-      }
-      previousWidth = currentWidth;
-    },
-    true
-  );
-
-  function buildWideView() {
-    projectSection.innerHTML = "";
-    const columnCointainer = document.createElement("div");
-    columnCointainer.classList.add("columnContainer");
-    const cardsLeftColumnDiv = document.createElement("div");
-    cardsLeftColumnDiv.classList.add("cards", "leftColumn");
-    const cardsRightColumnDiv = document.createElement("div");
-    cardsRightColumnDiv.classList.add("cards", "rightColumn");
-
-    const isUneven = cardsHtmlElements.length % 2 != 0;
-    let lastUnevenIndexDiv;
-
-    for (let index = 0; index < cardsHtmlElements.length; index++) {
-      if (index == cardsHtmlElements.length - 1 && isUneven) {
-        lastUnevenIndexDiv = document.createElement("div");
-        lastUnevenIndexDiv.classList.add("last");
-        lastUnevenIndexDiv.appendChild(cardsHtmlElements[index]);
-      } else {
-        index % 2 == 0
-          ? cardsLeftColumnDiv.appendChild(cardsHtmlElements[index])
-          : cardsRightColumnDiv.appendChild(cardsHtmlElements[index]);
-      }
-    }
-    projectSection.appendChild(columnCointainer);
-    columnCointainer.appendChild(cardsLeftColumnDiv);
-    columnCointainer.appendChild(cardsRightColumnDiv);
-    lastUnevenIndexDiv && projectSection.appendChild(lastUnevenIndexDiv);
-  }
-
-  function buildMobileView() {
-    projectSection.innerHTML = "";
-    const cardsColumnDiv = document.createElement("div");
-    cardsColumnDiv.classList.add("cards");
-
-    cardsHtmlElements.forEach((motorcycleCard, index) => {
-      cardsColumnDiv.appendChild(motorcycleCard);
-
-      projectSection.appendChild(cardsColumnDiv);
-    });
-  }
 };
 
 loadCardsToDOM();
 
+function buildWideView() {
+  projectSection.innerHTML = "";
+  const columnCointainer = document.createElement("div");
+  columnCointainer.classList.add("columnContainer");
+  const cardsLeftColumnDiv = document.createElement("div");
+  cardsLeftColumnDiv.classList.add("cards", "leftColumn");
+  const cardsRightColumnDiv = document.createElement("div");
+  cardsRightColumnDiv.classList.add("cards", "rightColumn");
+
+  const isUneven = cardsHtmlElements.length % 2 != 0;
+  let lastUnevenIndexDiv;
+
+  for (let index = 0; index < cardsHtmlElements.length; index++) {
+    if (index == cardsHtmlElements.length - 1 && isUneven) {
+      lastUnevenIndexDiv = document.createElement("div");
+      lastUnevenIndexDiv.classList.add("last");
+      lastUnevenIndexDiv.appendChild(cardsHtmlElements[index]);
+    } else {
+      index % 2 == 0
+        ? cardsLeftColumnDiv.appendChild(cardsHtmlElements[index])
+        : cardsRightColumnDiv.appendChild(cardsHtmlElements[index]);
+    }
+  }
+  projectSection.appendChild(columnCointainer);
+  columnCointainer.appendChild(cardsLeftColumnDiv);
+  columnCointainer.appendChild(cardsRightColumnDiv);
+  lastUnevenIndexDiv && projectSection.appendChild(lastUnevenIndexDiv);
+}
+
+function buildMobileView() {
+  projectSection.innerHTML = "";
+  const cardsColumnDiv = document.createElement("div");
+  cardsColumnDiv.classList.add("cards");
+
+  cardsHtmlElements.forEach((motorcycleCard, index) => {
+    cardsColumnDiv.appendChild(motorcycleCard);
+
+    projectSection.appendChild(cardsColumnDiv);
+  });
+}
+
+window.addEventListener("resize", (e) => {
+  currentWidth = window.innerWidth;
+  if (isResizeNeeded(currentWidth, previousWidth, breakPoint)) {
+    if (currentWidth > previousWidth) {
+      buildWideView();
+    } else {
+      buildMobileView();
+    }
+  }
+
+  if (isAboutUsResizeNeeded(currentWidth, previousWidth)) {
+    if (currentWidth > previousWidth) {
+      buildWideAboutUs();
+    } else {
+      buildMobileAboutUs();
+    }
+  }
+  previousWidth = currentWidth;
+});
+
+// observer keep track on about-us section to fire animation
+
+const aboutUsObserver = new IntersectionObserver(
+  (e) => {
+    e.forEach((entry) => {
+      const goat = entry.target.querySelector(".goatLogo");
+      goat.style.opacity = "0";
+
+      if (entry.isIntersecting) {
+        goat.style.opacity = "1";
+        entry.target.classList.remove("hidden");
+
+        return;
+      }
+    });
+  },
+  {
+    root: document.querySelector("#scrollArea"),
+    rootMargin: "0px",
+    threshold: 0.3,
+  }
+);
+
+//timeout to prevent firing animation before dom load
+
 // observer keep track on footer to fire animation
 
-const observer = new IntersectionObserver((e) => {
+const footerObserver = new IntersectionObserver((e) => {
   e.forEach((entry) => {
-    entry.target.style.removeProperty("animation-name");
-
-    entry.target.parentElement
-      .querySelector(".cat1 img")
-      .style.removeProperty("animation-name");
-
-    entry.target
-      .querySelectorAll(".border")
-      .forEach((border) => border.style.removeProperty("animation-name"));
-
-    entry.target
-      .querySelectorAll(".paw")
-      .forEach((paw) => paw.style.removeProperty("animation-name"));
-
-    if (entry.isIntersecting) {
+    if (entry.intersectionRatio > 0) {
       entry.target.style.animationName = "openFooter";
 
-      entry.target
-        .querySelectorAll(".border")
-        .forEach((border) => (border.style.animationName = "borderAnimation"));
+      entry.target.querySelector(".border1").style.animationName =
+        "borderAnimation";
+      entry.target.querySelector(".border2").style.animationName =
+        "borderAnimation";
 
       entry.target
         .querySelectorAll(".paw")
@@ -272,18 +365,18 @@ const observer = new IntersectionObserver((e) => {
   });
 });
 
-observer.observe(document.querySelector("footer"));
+setTimeout(() => {
+  footerObserver.observe(document.querySelector("footer"));
+  aboutUsObserver.observe(document.querySelector("#about"));
+}, 500);
 
-// card opens galery on click
+// card opens gallery on click
 
-document.addEventListener("click", async (e) => {
+document.querySelector("#projects").addEventListener("click", async (e) => {
   if (
     e.target.parentNode.classList.contains("segment") ||
     e.target.classList.contains("segment")
   ) {
-    // remove all existing event listeners to close gallery - needed to close properly
-    document.removeEventListener("keydown", esc);
-    gallery.querySelector(".close").removeEventListener("click", crossClose);
     if (
       e.target.parentNode.classList.contains("movie") ||
       e.target.classList.contains("movie")
@@ -296,151 +389,81 @@ document.addEventListener("click", async (e) => {
         ? url.substring(0, url.indexOf("#gallery"))
         : url;
     // add #gallery to url (needed to control browser back button)
-    window.location.assign(url + "#gallery");
+
     let img;
     if (e.target.classList.contains("segment"))
       img = e.target.querySelector("IMG");
     if (e.target.parentNode.classList.contains("segment"))
       img = e.target.parentNode.querySelector("IMG");
 
-    // console.log(e.target);
+    // // find folder name in src of an image
+    window.location.assign(url + "#gallery");
+    const folder = img.src.split("/").slice(0, -1).join("/");
 
-    gallery.style.background = `url(${img.src}) no-repeat black`;
-    gallery.style.backgroundPosition = `center`;
-    gallery.style.backgroundSize = `125%`;
+    const gallery = document.createElement("DIV");
+    gallery.classList.add("photo-gallery");
 
-    // find folder name in src of an image
-    const folder = img.src.split("/").at(-2);
-    // console.log(folder);
+    const container = document.createElement("DIV");
+    container.classList.add("container");
 
-    // get names of pictures in folder
-    const list_of_photos = await getPhotosList(folder);
-    //long description
-    await injectLogoIfLongText(await getInfoText(folder), folder);
+    const introContainer = document.createElement("DIV");
+    introContainer.classList.add("intro");
 
-    // sets first image to display
-    const mainImage = gallery.querySelector(".main-photo img");
-    mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
-    // sets title of a project
-    gallery.querySelector(".text .title").innerText =
-      e.target.parentElement.querySelector("h2").innerText;
+    const h2 = document.createElement("H2");
+    h2.classList.add("text-center");
+    h2.textContent = e.target.parentElement.querySelector("h2").innerText;
+    introContainer.appendChild(h2);
 
-    // creates gallery image right after load of chosen project
-    mainImage.addEventListener(
-      "load",
-      () => {
-        gallery.classList.add("gallery-visible");
-      },
-      { once: true }
-    );
+    const rowPhotos = document.createElement("DIV");
+    rowPhotos.classList.add("photos");
 
-    gallery.scrollTop = 0;
+    container.appendChild(introContainer);
+    container.appendChild(rowPhotos);
+    gallery.appendChild(container);
 
-    function closeGallery() {
-      gallery.querySelector(".close").removeEventListener("click", crossClose);
-      document.removeEventListener("keydown", esc);
-      gallery.style.removeProperty(...["background"]);
-      gallery.classList.remove("gallery-visible");
-      let preCloseHash = window.location.hash;
-      // console.log(preCloseHash);
-      window.location.hash =
-        preCloseHash.indexOf("#gallery") > -1
-          ? preCloseHash.substring(0, preCloseHash.indexOf("#gallery"))
-          : preCloseHash;
+    async function printPhotos() {
+      const photos = await getPhotosList(folder);
+      const photosRow = gallery.querySelector(".photos");
+      photos.forEach((photo) => {
+        const photoDiv = document.createElement("DIV");
+        photoDiv.classList.add("item");
+        const a = document.createElement("A");
+        a.href = `${folder}/${photo}`;
+        a.setAttribute("data-lightbox", "photos");
+        const img = document.createElement("IMG");
+        img.classList.add("img-fluid");
+        img.src = `${folder}/${photo}`;
+        a.appendChild(img);
+        photoDiv.appendChild(a);
+        photosRow.appendChild(photoDiv);
+      });
+      console.log(photos);
     }
 
-    // close gallery on back browser button
+    printPhotos();
+
+    document.body.appendChild(gallery);
+
+    document.addEventListener("keydown", esc, { once: true });
 
     window.onhashchange = function () {
       if (window.location.href.indexOf("#gallery") < 0) {
         closeGallery();
       }
     };
-
-    gallery
-      .querySelector(".close")
-      .addEventListener("click", crossClose, { once: true });
-
-    // close gallery by esc button and control gallery by arrows
-    arrowsReation = (e) => {
-      if (e.key === "ArrowRight") gallery.querySelector(".forward").click();
-      if (e.key === "ArrowLeft") gallery.querySelector(".backward").click();
-      if (!gallery.classList.contains("gallery-visible")) {
-        document.removeEventListener("keydown", arrowsReation);
-      }
-    };
-    gallery.addEventListener("keydown", arrowsReation);
-
-    document.addEventListener("keydown", esc, { once: true });
-
-    //event listener to forward button
-    gallery.querySelector(".forward").addEventListener("click", () => {
-      const currentImage = gallery.querySelector(".main-photo img");
-      const currentIndex = list_of_photos.indexOf(
-        currentImage.src.split("/").at(-1)
-      );
-      mainImage.style.opacity = `0`;
-      mainImage.parentElement.style.opacity = `0`;
-      mainImage.addEventListener(
-        "transitionend",
-        () => {
-          if (currentIndex < list_of_photos.length - 1) {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[currentIndex + 1]
-            }`;
-          } else {
-            mainImage.src = `/static/images/${folder}/${list_of_photos[0]}`;
-          }
-          mainImage.addEventListener(
-            "load",
-            () => {
-              mainImage.parentElement.style.opacity = `1`;
-              mainImage.style.opacity = `1`;
-            },
-            { once: true }
-          );
-        },
-        { once: true }
-      );
-    });
-
-    //event listener to backward button
-    gallery.querySelector(".backward").addEventListener("click", () => {
-      const currentImage = gallery.querySelector(".main-photo img");
-      const currentIndex = list_of_photos.indexOf(
-        currentImage.src.split("/").at(-1)
-      );
-      mainImage.style.opacity = `0`;
-      mainImage.parentElement.style.opacity = `0`;
-      mainImage.addEventListener(
-        "transitionend",
-        () => {
-          if (currentIndex > 0) {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[currentIndex - 1]
-            }`;
-          } else {
-            mainImage.src = `/static/images/${folder}/${
-              list_of_photos[list_of_photos.length - 1]
-            }`;
-          }
-          mainImage.addEventListener(
-            "load",
-            () => {
-              mainImage.parentElement.style.opacity = `1`;
-              mainImage.style.opacity = `1`;
-            },
-            { once: true }
-          );
-        },
-        { once: true }
-      );
-    });
   }
 });
 
+function closeGallery() {
+  document.body.removeChild(document.querySelector(".photo-gallery"));
+
+  document.removeEventListener("keydown", esc);
+  document.querySelector("#lightbox").style.display = "none";
+  document.querySelector("#lightboxOverlay").style.display = "none";
+}
+
 async function getPhotosList(folder) {
-  const response = await fetch(`/static/images/${folder}/info.json`)
+  const response = await fetch(`${folder}/info.json`)
     .then((response) => response.json())
     .then((data) => data["picList"]);
   return response;
@@ -466,9 +489,6 @@ esc = (e) => {
     if (document.location.hash.indexOf("#gallery") >= 0) {
       back();
     }
-    if (!gallery.classList.contains("gallery-visible")) {
-      document.removeEventListener("keydown", esc);
-    }
   }
 };
 
@@ -484,50 +504,6 @@ function back() {
 
 getAspectRatio = (img) => {
   return img.naturalWidth / img.naturalHeight;
-};
-
-injectLogoIfLongText = async (infoText, folderPath) => {
-  // injects img html with logo to the longer text
-  let adder = 300;
-  let node = gallery.querySelector(".text .description");
-  node.innerHTML = infoText;
-  let nodeHeight = node.clientHeight;
-  let pointerPixels = 60;
-  if (nodeHeight > 250) {
-    let imageHTML = '<img src="/static/images/logo.png" class="floatImage"/>';
-    logoHeight = 100;
-    do {
-      let wordsArr = infoText.split(" ");
-      let wordPointer = Math.floor(
-        (pointerPixels / nodeHeight) * wordsArr.length
-      );
-      wordsArr.splice(wordPointer, 0, imageHTML);
-      infoText = wordsArr.join(" ");
-      node.innerHTML = infoText;
-      nodeHeight = node.clientHeight;
-      pointerPixels += adder;
-      logoHeight = node.querySelector("IMG").clientHeight + 20;
-    } while (pointerPixels < nodeHeight - logoHeight);
-
-    let nominalPhotoArr = await getPhotosList(folderPath);
-
-    let photosArr = [...nominalPhotoArr];
-    var imgArr = Array.from(node.querySelectorAll("IMG"));
-    imgArr.forEach((image, index) => {
-      if (!index == 0) {
-        image.src = `/static/images/${folderPath}/${photosArr.splice(
-          getRandomInt(photosArr.length),
-          1
-        )}`;
-      }
-      if ((index + 1) % 2 == 0) {
-        image.classList.add("floatRight");
-      }
-      if (photosArr.length == 0) {
-        photosArr = nominalPhotoArr;
-      }
-    });
-  }
 };
 
 function getRandomInt(max) {
